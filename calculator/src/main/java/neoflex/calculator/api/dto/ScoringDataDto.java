@@ -8,7 +8,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
-@Builder
 public class ScoringDataDto {
     @Schema(description = "Total amount requested by the client")
     BigDecimal amount;

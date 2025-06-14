@@ -2,31 +2,33 @@ package neoflex.calculator.api.dto;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 public class LoanStatementRequestDto {
    @Schema(description = "How much client want to get")
-   BigDecimal amount;
+   private BigDecimal amount;
    @Schema(description = "What is the term of the loan in months")
-   Integer term;
+   private Integer term;
    @Schema(description = "Client's first name")
-   String firstName;
+   private String firstName;
    @Schema(description = "Client's last name")
-   String lastName;
+   private String lastName;
    @Schema(description = "Client's middle name (if exists)")
-   String middleName;
+   private String middleName;
    @Schema(description = "Client's email")
-   String email;
+   private String email;
    @Schema(description = "Client's birthdate")
-   LocalDate birthdate;
+   private LocalDate birthdate;
    @Schema(description = "Client's passport series (first four digits)")
-   String passportSeries;
+   private String passportSeries;
    @Schema(description = "Client's passport number (last six digits)")
-   String passportNumber;
+   private String passportNumber;
 }
