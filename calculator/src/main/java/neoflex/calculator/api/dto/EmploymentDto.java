@@ -7,7 +7,6 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-@Builder
 public class EmploymentDto {
     @Schema(description ="Status of employment, e.g. 'Employed', 'Unemployed', 'Self-employed', 'Business-owner'")
     String employmentStatus;

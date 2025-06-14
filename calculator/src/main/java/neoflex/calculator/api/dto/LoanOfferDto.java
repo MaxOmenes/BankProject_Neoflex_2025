@@ -10,7 +10,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class LoanOfferDto {
-    @Schema(description = "Unique identifier of the loan offer")
+    @Schema(description = "Unique identifier of the statement")
     UUID statementId;
     @Schema(description = " Amount requested by the client")
     BigDecimal requestedAmount;
