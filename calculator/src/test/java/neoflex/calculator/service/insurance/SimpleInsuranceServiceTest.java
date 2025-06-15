@@ -1,5 +1,7 @@
 package neoflex.calculator.service.insurance;
 
+import neoflex.calculator.store.entity.credit.CreditEntity;
+import neoflex.calculator.store.entity.credit.PaymentScheduleEntity;
 import neoflex.calculator.store.entity.offer.OfferEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
@@ -42,5 +46,38 @@ class SimpleInsuranceServiceTest {
         assertEquals(1, insurancePayments.size());
         assertEquals(new BigDecimal(500).setScale(2, BigDecimal.ROUND_HALF_UP),
                 insurancePayments.getFirst().setScale(2, BigDecimal.ROUND_HALF_UP));
+    }
+
+
+    @Test
+    void testCalculateInsurance() {
+
+        List<PaymentScheduleEntity> payments = new ArrayList<>();
+
+        for (int i = 0; i < 12; i++) {
+            payments.add(PaymentScheduleEntity.builder()
+                    .number(i + 1)
+                    .totalPayment(new BigDecimal("8884.88"))
+                    .interestPayment(new BigDecimal("1000"))
+                    .debtPayment(new BigDecimal("7884.88"))
+                    .remainingDebt(new BigDecimal("100000").subtract(new BigDecimal("7884.88").multiply(BigDecimal.valueOf(i + 1))))
+                    .build());
+        }
+
+        CreditEntity entity = CreditEntity.builder()
+                .amount(new BigDecimal("100000"))
+                .term(12)
+                .rate(new BigDecimal("12"))
+                .paymentSchedule(payments)
+                .isInsuranceEnabled(true)
+                .isSalaryClient(false)
+                .build();
+
+        var insurancePayments = service.calculateInsurance(entity);
+
+        assertNotNull(insurancePayments);
+        assertEquals(1, insurancePayments.size());
+        assertEquals(new BigDecimal("500.00").setScale(2, BigDecimal.ROUND_HALF_UP),
+                insurancePayments.get(0).setScale(2, BigDecimal.ROUND_HALF_UP));
     }
 }
