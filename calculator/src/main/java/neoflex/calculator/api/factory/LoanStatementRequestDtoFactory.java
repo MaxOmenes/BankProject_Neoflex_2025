@@ -12,7 +12,7 @@ public class LoanStatementRequestDtoFactory implements
     @Override
     public LoanStatementRequestEntity toEntity(LoanStatementRequestDto dto) {
         return LoanStatementRequestEntity.builder()
-                .id(UUID.randomUUID()) //TODO: WHERE I SHOULD GENERATE ID?
+                .id(null) //TODO: WHERE I SHOULD GENERATE ID?
                 .amount(dto.getAmount())
                 .term(dto.getTerm())
                 .firstName(dto.getFirstName())

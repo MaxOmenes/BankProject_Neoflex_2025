@@ -60,7 +60,7 @@ public class SimpleInsuranceService implements InsuranceService{
 
         for (PaymentScheduleEntity payment : payments) {
             if (payment.getNumber()-1 % 12 == 0) {
-                BigDecimal insurancePayment = payment.getRemainingDebt().multiply(insuranceForMultiplyRate);
+                BigDecimal insurancePayment = payment.getRemainingDebt().add(payment.getDebtPayment()).multiply(insuranceForMultiplyRate);
                 insurancePayments.add(insurancePayment);
             }
         }
