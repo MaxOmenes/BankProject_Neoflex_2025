@@ -32,8 +32,6 @@ public class PreScoringService implements OfferService {
                         .isSalaryClient(isSalaryClient)
                         .build();
 
-                System.out.println(offer.getRate());
-
                 calculateOfferService.calculateOffer(offer);
                 offers.add(offer);
             }
