@@ -1,5 +1,6 @@
 package neoflex.calculator.service.credit.payment;
 
+import lombok.extern.slf4j.Slf4j;
 import neoflex.calculator.store.entity.credit.CreditEntity;
 import neoflex.calculator.store.entity.credit.PaymentScheduleEntity;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Slf4j
 public class CalculateAnnuityPaymentService implements PaymentService{
     @Override
     public void calculatePaymentSchedule(CreditEntity entity) {
@@ -54,7 +56,9 @@ public class CalculateAnnuityPaymentService implements PaymentService{
             payments.add(payment);
 
             currentDate = currentDate.plusMonths(1);
-
+            log.info("Payment {}: Total: {}, Interest: {}, Principal: {}, Remaining Debt: {}",
+                    month, payment.getTotalPayment(), payment.getInterestPayment(),
+                    payment.getDebtPayment(), payment.getRemainingDebt());
         }
 
         entity.setPaymentSchedule(payments);

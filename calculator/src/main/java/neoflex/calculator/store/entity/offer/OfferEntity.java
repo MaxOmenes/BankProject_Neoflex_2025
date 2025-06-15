@@ -2,6 +2,7 @@ package neoflex.calculator.store.entity.offer;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import neoflex.calculator.configuration.ConstantsConfiguration;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@ToString
 public class OfferEntity implements Cloneable{
     private UUID statementId;
     private BigDecimal requestedAmount;

@@ -1,5 +1,6 @@
 package neoflex.calculator.service.offer;
 
+import lombok.extern.slf4j.Slf4j;
 import neoflex.calculator.service.insurance.InsuranceService;
 import neoflex.calculator.store.entity.offer.OfferEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import java.math.RoundingMode;
 import java.util.List;
 
 @Component
+@Slf4j
 public class CalculateAnnuityOfferService implements CalculateOfferService{
 
     @Autowired
@@ -57,5 +59,6 @@ public class CalculateAnnuityOfferService implements CalculateOfferService{
         }
 
         entity.setTotalAmount(totalAmount);
+        log.info("Calculated offer: {}", entity);
     }
 }

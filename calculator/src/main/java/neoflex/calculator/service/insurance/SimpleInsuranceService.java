@@ -1,5 +1,6 @@
 package neoflex.calculator.service.insurance;
 
+import lombok.extern.slf4j.Slf4j;
 import neoflex.calculator.store.entity.credit.CreditEntity;
 import neoflex.calculator.store.entity.credit.PaymentScheduleEntity;
 import neoflex.calculator.store.entity.offer.OfferEntity;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@Slf4j
 public class SimpleInsuranceService implements InsuranceService{
     @Value("${constants.insurancePolicyRate}")
     private BigDecimal insurancePolicyRate;
@@ -45,7 +47,7 @@ public class SimpleInsuranceService implements InsuranceService{
 
             remainingAmount = remainingAmount.subtract(principal).max(BigDecimal.ZERO);
         }
-
+        log.info("Insurance payments for offer calculated: {}", insurancePayments);
         return insurancePayments;
     }
 
@@ -64,7 +66,7 @@ public class SimpleInsuranceService implements InsuranceService{
                 insurancePayments.add(insurancePayment);
             }
         }
-
+        log.info("Insurance payments for credit calculated: {}", insurancePayments);
         return insurancePayments;
     }
 }
