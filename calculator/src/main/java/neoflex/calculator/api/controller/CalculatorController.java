@@ -11,6 +11,7 @@ import neoflex.calculator.api.dto.CreditDto;
 import neoflex.calculator.api.dto.LoanOfferDto;
 import neoflex.calculator.api.dto.LoanStatementRequestDto;
 import neoflex.calculator.api.dto.ScoringDataDto;
+import neoflex.calculator.api.exception.ValidationException;
 import neoflex.calculator.api.factory.CreditDtoFactory;
 import neoflex.calculator.api.factory.LoanOfferDtoFactory;
 import neoflex.calculator.api.factory.LoanStatementRequestDtoFactory;
@@ -129,7 +130,7 @@ public class CalculatorController {
 
 
         if (credit == null) {
-            throw new IllegalArgumentException("Invalid scoring data provided");
+            throw new ValidationException("Scoring failed. Please check the provided data.");
         }
 
         creditService.calculateCredit(credit);
