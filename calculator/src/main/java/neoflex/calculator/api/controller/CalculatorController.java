@@ -3,6 +3,7 @@ package neoflex.calculator.api.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -10,11 +11,18 @@ import neoflex.calculator.api.dto.CreditDto;
 import neoflex.calculator.api.dto.LoanOfferDto;
 import neoflex.calculator.api.dto.LoanStatementRequestDto;
 import neoflex.calculator.api.dto.ScoringDataDto;
+import neoflex.calculator.api.factory.CreditDtoFactory;
 import neoflex.calculator.api.factory.LoanOfferDtoFactory;
 import neoflex.calculator.api.factory.LoanStatementRequestDtoFactory;
+import neoflex.calculator.api.factory.ScoringDataDtoFactory;
 import neoflex.calculator.service.OfferService;
+import neoflex.calculator.service.credit.CreditService;
+import neoflex.calculator.service.scoring.ScoringService;
+import neoflex.calculator.store.entity.credit.CreditEntity;
 import neoflex.calculator.store.entity.offer.LoanStatementRequestEntity;
 import neoflex.calculator.store.entity.offer.OfferEntity;
+import neoflex.calculator.store.entity.scoring.ScoringEntity;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,6 +40,11 @@ public class CalculatorController {
     LoanStatementRequestDtoFactory loanStatementRequestDtoFactory;
     LoanOfferDtoFactory loanOfferDtoFactory;
     OfferService offerService;
+
+    CreditDtoFactory creditDtoFactory;
+    ScoringDataDtoFactory scoringDataDtoFactory;
+    ScoringService scoringService;
+    CreditService creditService;
 
     @Operation(
             summary = "Calculate loan offers",
@@ -73,7 +86,53 @@ public class CalculatorController {
             summary = "Calculate credit",
             description = "Validation of submitted data + data scoring + full calculation of credit parameters")
     @PostMapping("calc")
-    public CreditDto calculateCredit(ScoringDataDto scoringData) {
-        return null;
+    public CreditDto calculateCredit(@io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Scoring data for credit calculation",
+            required = true,
+            content = @io.swagger.v3.oas.annotations.media.Content(
+                    mediaType = "application/json",
+                    examples = @ExampleObject(
+                            name = "ScoringDataDto Example",
+                            value = """
+                                    {
+                                        "amount": 100000,
+                                        "term": 36,
+                                        "firstName": "Snake",
+                                        "lastName": "Solid",
+                                        "middleName": "John",
+                                        "gender": "MALE",
+                                        "birthdate": "1972-01-01",
+                                        "passportSeries": "1234",
+                                        "passportNumber": "567890",
+                                        "passportIssueDate": "2010-01-01",
+                                        "passportIssueBranch": "U.S. Department of State",
+                                        "maritalStatus": "MARRIED",
+                                        "dependentAmount": 2,
+                                        "employment": {
+                                            "employmentStatus": "EMPLOYED",
+                                            "employerINN": "1234567890",
+                                            "salary": 50000,
+                                            "position": "MANAGER",
+                                            "workExperienceTotal": 120,
+                                            "workExperienceCurrent": 24
+                                        },
+                                        "accountNumber": "12345678901234567890",
+                                        "isInsuranceEnabled": true,
+                                        "isSalaryClient": true
+                                    }
+                                    """
+                    )
+            )
+    ) @RequestBody @Valid ScoringDataDto scoringData) {
+        ScoringEntity scoringEntity = scoringDataDtoFactory.toEntity(scoringData);
+        CreditEntity credit = scoringService.score(scoringEntity);
+
+
+        if (credit == null) {
+            throw new IllegalArgumentException("Invalid scoring data provided");
+        }
+
+        creditService.calculateCredit(credit);
+        return creditDtoFactory.toDto(credit);
     }
 }

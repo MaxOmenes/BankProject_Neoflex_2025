@@ -1,14 +1,10 @@
-package neoflex.calculator.service.calculator;
+package neoflex.calculator.service.offer;
 
 import neoflex.calculator.store.entity.offer.OfferEntity;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
@@ -90,7 +86,5 @@ class CalculateAnnuityOfferServiceTest {
                 .compareTo(EPSILON) < 0,
                 String.format("Actual total amount: %s, expected: %s", expectedTotalAmount,offer.getTotalAmount()));
     }
-
-    //TODO: add test wit test all variants of isInsuranceEnabled and isSalaryClient
 
 }

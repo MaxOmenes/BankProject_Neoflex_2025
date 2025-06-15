@@ -1,5 +1,7 @@
 package neoflex.calculator.service.insurance;
 
+import neoflex.calculator.store.entity.credit.CreditEntity;
+import neoflex.calculator.store.entity.credit.PaymentScheduleEntity;
 import neoflex.calculator.store.entity.offer.OfferEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -42,6 +44,25 @@ public class SimpleInsuranceService implements InsuranceService{
             BigDecimal principal = monthlyPayment.subtract(interest);
 
             remainingAmount = remainingAmount.subtract(principal).max(BigDecimal.ZERO);
+        }
+
+        return insurancePayments;
+    }
+
+    @Override
+    public List<BigDecimal> calculateInsurance(CreditEntity entity) {
+        List<BigDecimal> insurancePayments = new ArrayList<>();
+        List<PaymentScheduleEntity> payments = entity.getPaymentSchedule();
+
+        BigDecimal insuranceForMultiplyRate = insurancePolicyRate.divide(
+                BigDecimal.valueOf(100), 10, BigDecimal.ROUND_HALF_UP
+        );
+
+        for (PaymentScheduleEntity payment : payments) {
+            if (payment.getNumber()-1 % 12 == 0) {
+                BigDecimal insurancePayment = payment.getRemainingDebt().multiply(insuranceForMultiplyRate);
+                insurancePayments.add(insurancePayment);
+            }
         }
 
         return insurancePayments;

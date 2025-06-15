@@ -1,14 +1,12 @@
-package neoflex.calculator.service.calculator;
+package neoflex.calculator.service.offer;
 
 import neoflex.calculator.service.insurance.InsuranceService;
 import neoflex.calculator.store.entity.offer.OfferEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
