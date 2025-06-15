@@ -73,7 +73,7 @@ public class CalculatorController {
             summary = "Calculate credit",
             description = "Validation of submitted data + data scoring + full calculation of credit parameters")
     @PostMapping("calc")
-    public CreditDto calculateCredit(ScoringDataDto scoringData) {
+    public CreditDto calculateCredit(@RequestBody ScoringDataDto scoringData) {
         return null;
     }
 }
