@@ -7,6 +7,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import neoflex.calculator.api.dto.CreditDto;
 import neoflex.calculator.api.dto.LoanOfferDto;
 import neoflex.calculator.api.dto.LoanStatementRequestDto;
@@ -36,6 +37,7 @@ import java.util.List;
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Tag(name = "Calculator", description = "API for calculating loan offers and credit scoring")
+@Slf4j
 public class CalculatorController {
 
     LoanStatementRequestDtoFactory loanStatementRequestDtoFactory;
@@ -75,12 +77,15 @@ public class CalculatorController {
                     )
             )
     ) @RequestBody LoanStatementRequestDto request) {
+        log.info("Received request for loan offers: {}", request);
         LoanStatementRequestEntity statement =
                 loanStatementRequestDtoFactory.toEntity(request);
         List<OfferEntity> offers = offerService.makeOffers(statement);
-        return offers.stream()
+        List<LoanOfferDto> offersDto = (List<LoanOfferDto>) offers.stream()
                 .map(loanOfferDtoFactory::toDto)
                 .toList();
+        log.info("Calculated loan offers: {}", offersDto);
+        return offersDto;
     }
 
     @Operation(
@@ -125,6 +130,7 @@ public class CalculatorController {
                     )
             )
     ) @RequestBody @Valid ScoringDataDto scoringData) {
+        log.info("Received scoring data for credit calculation: {}", scoringData);
         ScoringEntity scoringEntity = scoringDataDtoFactory.toEntity(scoringData);
         CreditEntity credit = scoringService.score(scoringEntity);
 
@@ -134,6 +140,8 @@ public class CalculatorController {
         }
 
         creditService.calculateCredit(credit);
-        return creditDtoFactory.toDto(credit);
+        CreditDto creditDto = creditDtoFactory.toDto(credit);
+        log.info("Calculated credit: {}", creditDto);
+        return creditDto;
     }
 }
