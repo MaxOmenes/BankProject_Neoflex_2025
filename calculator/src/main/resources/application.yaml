@@ -1,6 +1,10 @@
 spring:
   application:
     name: calculator
+logging:
+  level:
+    root: info
+    neoflex.calculator: debug
 
 constants:
   rate: 36

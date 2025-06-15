@@ -16,6 +16,7 @@ public class CreditEntity {
     BigDecimal amount;
     Integer term;
     BigDecimal monthlyPayment;
+    //Logic is same as offer rate, but entity will only contain the rate, not logic to calculate it
     BigDecimal rate;
     BigDecimal psk;
     Boolean isInsuranceEnabled;

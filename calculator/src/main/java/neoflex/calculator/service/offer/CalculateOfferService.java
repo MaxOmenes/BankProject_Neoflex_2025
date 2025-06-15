@@ -1,4 +1,4 @@
-package neoflex.calculator.service.calculator;
+package neoflex.calculator.service.offer;
 
 import neoflex.calculator.store.entity.offer.OfferEntity;
 

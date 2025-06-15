@@ -15,6 +15,7 @@ public class CreditDtoFactory implements EntityToDtoFactory<CreditDto, CreditEnt
         return CreditDto.builder()
                 .amount(entity.getAmount())
                 .term(entity.getTerm())
+                .rate(entity.getRate())
                 .monthlyPayment(entity.getMonthlyPayment())
                 .psk(entity.getPsk())
                 .isInsuranceEnabled(entity.getIsInsuranceEnabled())

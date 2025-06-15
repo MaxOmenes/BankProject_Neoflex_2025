@@ -1,6 +1,6 @@
 package neoflex.calculator.service;
 
-import neoflex.calculator.service.calculator.CalculateOfferService;
+import neoflex.calculator.service.offer.CalculateOfferService;
 import neoflex.calculator.store.entity.offer.LoanStatementRequestEntity;
 import neoflex.calculator.store.entity.offer.OfferEntity;
 import org.springframework.beans.factory.annotation.Autowired;
