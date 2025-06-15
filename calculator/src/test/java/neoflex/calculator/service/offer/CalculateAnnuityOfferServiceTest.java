@@ -87,6 +87,4 @@ class CalculateAnnuityOfferServiceTest {
                 String.format("Actual total amount: %s, expected: %s", expectedTotalAmount,offer.getTotalAmount()));
     }
 
-    //TODO: add test wit test all variants of isInsuranceEnabled and isSalaryClient
-
 }

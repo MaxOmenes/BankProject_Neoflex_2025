@@ -8,6 +8,5 @@ import java.util.List;
 
 public interface InsuranceService {
     public List<BigDecimal> calculateInsurance(OfferEntity entity);
-    //TODO: add method that i will use in calculate credit service
     public List<BigDecimal> calculateInsurance(CreditEntity entity);
 }

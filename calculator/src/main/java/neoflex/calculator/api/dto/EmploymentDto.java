@@ -18,7 +18,7 @@ public class EmploymentDto {
     BigDecimal salary;
 
     @Schema(description = "Position of the client at work, e.g. 'Manager', 'Middle-manager', 'Top-manager'")
-    String position; //TODO: Ask what is it means and what enum i should make
+    String position;
 
     @Schema(description = "Total work experience in months in all companies")
     Integer workExperienceTotal;
