@@ -1,11 +1,9 @@
 package neoflex.calculator.service.offer;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import neoflex.calculator.service.insurance.InsuranceService;
 import neoflex.calculator.store.entity.offer.OfferEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;

@@ -4,7 +4,6 @@ import lombok.RequiredArgsConstructor;
 import neoflex.calculator.service.offer.CalculateOfferService;
 import neoflex.calculator.store.entity.offer.LoanStatementRequestEntity;
 import neoflex.calculator.store.entity.offer.OfferEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

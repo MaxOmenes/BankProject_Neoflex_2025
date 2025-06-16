@@ -1,12 +1,8 @@
 package neoflex.calculator.api.factory;
 
 import neoflex.calculator.api.dto.CreditDto;
-import neoflex.calculator.api.dto.LoanStatementRequestDto;
-import neoflex.calculator.api.dto.PaymentScheduleElementDto;
 import neoflex.calculator.store.entity.credit.CreditEntity;
 import neoflex.calculator.store.entity.credit.PaymentScheduleEntity;
-import neoflex.calculator.store.entity.offer.LoanStatementRequestEntity;
-import org.junit.jupiter.api.AutoClose;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,8 +11,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 class CreditDtoFactoryTest {

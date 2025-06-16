@@ -10,10 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 class SimpleInsuranceServiceTest {
     @Autowired
@@ -28,7 +30,7 @@ class SimpleInsuranceServiceTest {
 
         OfferEntity.Builder offerBuilder = OfferEntity.builder();
 
-        setInsuranceRateMethod.invoke(offerBuilder, Double.valueOf(0.5));
+        setInsuranceRateMethod.invoke(offerBuilder, 0.5);
 
         OfferEntity offerEntity = offerBuilder
                 .requestedAmount(new BigDecimal("100000"))
@@ -44,8 +46,8 @@ class SimpleInsuranceServiceTest {
 
         assertNotNull(insurancePayments);
         assertEquals(1, insurancePayments.size());
-        assertEquals(new BigDecimal(500).setScale(2, BigDecimal.ROUND_HALF_UP),
-                insurancePayments.getFirst().setScale(2, BigDecimal.ROUND_HALF_UP));
+        assertEquals(new BigDecimal(500).setScale(2, RoundingMode.HALF_UP),
+                insurancePayments.getFirst().setScale(2, RoundingMode.HALF_UP));
     }
 
 
@@ -77,7 +79,7 @@ class SimpleInsuranceServiceTest {
 
         assertNotNull(insurancePayments);
         assertEquals(1, insurancePayments.size());
-        assertEquals(new BigDecimal("500.00").setScale(2, BigDecimal.ROUND_HALF_UP),
-                insurancePayments.get(0).setScale(2, BigDecimal.ROUND_HALF_UP));
+        assertEquals(new BigDecimal("500.00").setScale(2, RoundingMode.HALF_UP),
+                insurancePayments.getFirst().setScale(2, RoundingMode.HALF_UP));
     }
 }

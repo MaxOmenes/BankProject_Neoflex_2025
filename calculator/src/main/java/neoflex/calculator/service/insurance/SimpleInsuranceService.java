@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,12 +29,11 @@ public class SimpleInsuranceService implements InsuranceService{
         List<BigDecimal> insurancePayments = new ArrayList<>();
         BigDecimal remainingAmount = entity.getRequestedAmount();
 
-        BigDecimal monthlyRate = entity.getRate()
-                .divide(BigDecimal.valueOf(100),10, BigDecimal.ROUND_HALF_UP)
-                .divide(BigDecimal.valueOf(12), 10, BigDecimal.ROUND_HALF_UP);
+        BigDecimal monthlyRate = entity.getRate().divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP)
+                .divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP);
         BigDecimal monthlyPayment = entity.getMonthlyPayment();
         BigDecimal insuranceForMultiplyRate = insurancePolicyRate.divide(
-                BigDecimal.valueOf(100), 10, BigDecimal.ROUND_HALF_UP
+                BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP
         );
 
         for (int month = 1; month <= entity.getTerm(); month++) {
@@ -57,7 +56,7 @@ public class SimpleInsuranceService implements InsuranceService{
         List<PaymentScheduleEntity> payments = entity.getPaymentSchedule();
 
         BigDecimal insuranceForMultiplyRate = insurancePolicyRate.divide(
-                BigDecimal.valueOf(100), 10, BigDecimal.ROUND_HALF_UP
+                BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP
         );
 
         for (PaymentScheduleEntity payment : payments) {

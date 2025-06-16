@@ -1,17 +1,14 @@
 package neoflex.calculator.service.credit;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import neoflex.calculator.service.credit.payment.PaymentService;
 import neoflex.calculator.service.insurance.InsuranceService;
 import neoflex.calculator.store.entity.credit.CreditEntity;
 import neoflex.calculator.store.entity.credit.PaymentScheduleEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component

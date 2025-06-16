@@ -7,6 +7,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface InsuranceService {
-    public List<BigDecimal> calculateInsurance(OfferEntity entity);
-    public List<BigDecimal> calculateInsurance(CreditEntity entity);
+    List<BigDecimal> calculateInsurance(OfferEntity entity);
+    List<BigDecimal> calculateInsurance(CreditEntity entity);
 }

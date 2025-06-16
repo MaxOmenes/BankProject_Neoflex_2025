@@ -6,7 +6,6 @@ import neoflex.calculator.store.entity.enums.EmploymentPosition;
 import neoflex.calculator.store.entity.enums.EmploymentStatus;
 import neoflex.calculator.store.entity.enums.Gender;
 import neoflex.calculator.store.entity.enums.MartialStatus;
-import neoflex.calculator.store.entity.scoring.EmploymentEntity;
 import neoflex.calculator.store.entity.scoring.ScoringEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class ScoringDataDtoFactoryTest {
 
