@@ -1,5 +1,7 @@
 package neoflex.calculator.service.credit;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import neoflex.calculator.service.credit.payment.PaymentService;
 import neoflex.calculator.service.insurance.InsuranceService;
 import neoflex.calculator.store.entity.credit.CreditEntity;
@@ -13,11 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class CalculateAnnuityCreditService implements CreditService{
-    @Autowired
-    PaymentService paymentService;
-    @Autowired
-    InsuranceService insuranceService;
+
+    private final PaymentService paymentService;
+    private final InsuranceService insuranceService;
 
     @Override
     public void calculateCredit(CreditEntity entity) {

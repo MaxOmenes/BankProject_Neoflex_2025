@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import neoflex.calculator.api.dto.CreditDto;
@@ -34,20 +35,19 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/calculator")
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 @Tag(name = "Calculator", description = "API for calculating loan offers and credit scoring")
 @Slf4j
 public class CalculatorController {
 
-    LoanStatementRequestDtoFactory loanStatementRequestDtoFactory;
-    LoanOfferDtoFactory loanOfferDtoFactory;
-    OfferService offerService;
+    private final LoanStatementRequestDtoFactory loanStatementRequestDtoFactory;
+    private final LoanOfferDtoFactory loanOfferDtoFactory;
+    private final OfferService offerService;
 
-    CreditDtoFactory creditDtoFactory;
-    ScoringDataDtoFactory scoringDataDtoFactory;
-    ScoringService scoringService;
-    CreditService creditService;
+    private final CreditDtoFactory creditDtoFactory;
+    private final ScoringDataDtoFactory scoringDataDtoFactory;
+    private final ScoringService scoringService;
+    private final CreditService creditService;
 
     @Operation(
             summary = "Calculate loan offers",
