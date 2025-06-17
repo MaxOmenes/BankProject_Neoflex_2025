@@ -11,19 +11,19 @@ import java.util.UUID;
 @Builder
 public class LoanOfferDto {
     @Schema(description = "Unique identifier of the statement")
-    UUID statementId;
+    private UUID statementId;
     @Schema(description = " Amount requested by the client")
-    BigDecimal requestedAmount;
+    private BigDecimal requestedAmount;
     @Schema(description = "Total amount of the loan offer including percentages and fees")
-    BigDecimal totalAmount;
+    private BigDecimal totalAmount;
     @Schema(description = "How many months the loan will be active")
-    Integer term;
+    private Integer term;
     @Schema(description = "Monthly payment amount")
-    BigDecimal monthlyPayment;
+    private BigDecimal monthlyPayment;
     @Schema(description = "Percentage rate for the loan")
-    BigDecimal rate;
+    private BigDecimal rate;
     @Schema(description = "Is the loan offer available for insurance")
-    Boolean isInsuranceEnabled;
+    private Boolean isInsuranceEnabled;
     @Schema(description = "Is the client a salary client")
-    Boolean isSalaryClient;
+    private Boolean isSalaryClient;
 }
