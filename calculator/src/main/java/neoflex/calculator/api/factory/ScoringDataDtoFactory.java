@@ -1,5 +1,7 @@
 package neoflex.calculator.api.factory;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import neoflex.calculator.api.dto.ScoringDataDto;
 import neoflex.calculator.store.entity.enums.Gender;
 import neoflex.calculator.store.entity.enums.MartialStatus;
@@ -8,9 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class ScoringDataDtoFactory implements DtoToEntityFactory<ScoringDataDto, ScoringEntity>{
-    @Autowired
-    EmploymentDtoFactory employmentDtoFactory;
+
+    private final EmploymentDtoFactory employmentDtoFactory;
 
     @Override
     public ScoringEntity toEntity(ScoringDataDto dto) {

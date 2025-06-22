@@ -1,14 +1,17 @@
 package neoflex.calculator.api.factory;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import neoflex.calculator.api.dto.CreditDto;
 import neoflex.calculator.store.entity.credit.CreditEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor
 public class CreditDtoFactory implements EntityToDtoFactory<CreditDto, CreditEntity>{
-    @Autowired
-    PaymentScheduleDtoFactory paymentScheduleDtoFactory;
+
+    private final PaymentScheduleDtoFactory paymentScheduleDtoFactory;
 
     @Override
     public CreditDto toDto(CreditEntity entity) {

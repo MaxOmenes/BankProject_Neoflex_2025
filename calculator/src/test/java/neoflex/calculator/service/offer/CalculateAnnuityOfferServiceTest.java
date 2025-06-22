@@ -13,12 +13,13 @@ import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class CalculateAnnuityOfferServiceTest {
     @Autowired
-    CalculateAnnuityOfferService service; //TODO: use @MockBean for unit tests
+    CalculateAnnuityOfferService service;
 
     static Method setInsuranceRateMethod;
     static Method setSalaryClientRateMethod;
@@ -42,7 +43,7 @@ class CalculateAnnuityOfferServiceTest {
      */
     @Test
     void testCalculateOffer_RaiffeisenExample() {
-        CalculateAnnuityOfferService service = new CalculateAnnuityOfferService();
+
         OfferEntity offer = OfferEntity.builder()
                 .requestedAmount(new BigDecimal("20000"))
                 .term(36)

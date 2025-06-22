@@ -11,19 +11,19 @@ import java.util.List;
 @Builder
 public class CreditDto {
     @Schema(description = "Amount requested by the client")
-    BigDecimal amount;
+    private BigDecimal amount;
     @Schema(description = "How many months the loan will be active")
-    Integer term;
+    private Integer term;
     @Schema(description = "Monthly payment amount")
-    BigDecimal monthlyPayment;
+    private BigDecimal monthlyPayment;
     @Schema(description = "Percentage rate for the loan")
-    BigDecimal rate;
+    private BigDecimal rate;
     @Schema(description = "Total amount of the loan offer including percentages")
-    BigDecimal psk;
+    private BigDecimal psk;
     @Schema(description = "Is the loan offer available for insurance")
-    Boolean isInsuranceEnabled;
+    private Boolean isInsuranceEnabled;
     @Schema(description = "Is the client a salary client")
-    Boolean isSalaryClient;
+    private Boolean isSalaryClient;
     @Schema(description = "Payment schedule for the loan")
-    List<PaymentScheduleElementDto> paymentSchedule;
+    private List<PaymentScheduleElementDto> paymentSchedule;
 }

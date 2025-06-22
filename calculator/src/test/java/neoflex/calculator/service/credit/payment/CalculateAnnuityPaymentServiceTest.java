@@ -8,7 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 @SpringBootTest
 class CalculateAnnuityPaymentServiceTest {
     @Autowired
@@ -27,7 +28,7 @@ class CalculateAnnuityPaymentServiceTest {
         assertNotNull(creditEntity.getPaymentSchedule());
         assertEquals(12, creditEntity.getPaymentSchedule().size());
 
-        PaymentScheduleEntity firstPayment = creditEntity.getPaymentSchedule().get(0);
+        PaymentScheduleEntity firstPayment = creditEntity.getPaymentSchedule().getFirst();
         assertEquals(new BigDecimal("8884.88"), firstPayment.getTotalPayment());
         assertEquals(new BigDecimal("1000.00"), firstPayment.getInterestPayment());
         assertEquals(new BigDecimal("7884.88"), firstPayment.getDebtPayment());

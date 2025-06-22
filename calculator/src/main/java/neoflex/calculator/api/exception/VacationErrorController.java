@@ -2,6 +2,7 @@ package neoflex.calculator.api.exception;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.boot.web.error.ErrorAttributeOptions;
 import org.springframework.boot.web.servlet.error.ErrorAttributes;
@@ -15,12 +16,11 @@ import org.springframework.web.context.request.WebRequest;
 import java.util.Map;
 
 @Controller
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class VacationErrorController implements ErrorController {
     public static final String ERROR_PATH = "/error";
 
-    ErrorAttributes errorAttributes;
+    private final ErrorAttributes errorAttributes;
 
     @RequestMapping(VacationErrorController.ERROR_PATH)
     public ResponseEntity<Object> error(WebRequest request) {

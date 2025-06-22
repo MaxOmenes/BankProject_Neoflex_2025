@@ -8,8 +8,7 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ErrorDTO {
-    String error;
-    String description;
+    private String error;
+    private String description;
 }

@@ -1,9 +1,9 @@
 package neoflex.calculator.service.offer;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import neoflex.calculator.service.insurance.InsuranceService;
 import neoflex.calculator.store.entity.offer.OfferEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -12,10 +12,10 @@ import java.util.List;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class CalculateAnnuityOfferService implements CalculateOfferService{
 
-    @Autowired
-    InsuranceService insuranceService;
+    private final InsuranceService insuranceService;
 
     /**
      * Calculates the offer based on the requested amount, rate, and term.

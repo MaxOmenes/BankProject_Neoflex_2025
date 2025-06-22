@@ -6,6 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import neoflex.calculator.api.dto.CreditDto;
@@ -18,6 +19,8 @@ import neoflex.calculator.api.factory.LoanOfferDtoFactory;
 import neoflex.calculator.api.factory.LoanStatementRequestDtoFactory;
 import neoflex.calculator.api.factory.ScoringDataDtoFactory;
 import neoflex.calculator.service.OfferService;
+import neoflex.calculator.service.calculate.CalculateCreditService;
+import neoflex.calculator.service.calculate.CalculateOfferService;
 import neoflex.calculator.service.credit.CreditService;
 import neoflex.calculator.service.scoring.ScoringService;
 import neoflex.calculator.store.entity.credit.CreditEntity;
@@ -34,20 +37,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/calculator")
-@AllArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@RequiredArgsConstructor
 @Tag(name = "Calculator", description = "API for calculating loan offers and credit scoring")
 @Slf4j
 public class CalculatorController {
 
-    LoanStatementRequestDtoFactory loanStatementRequestDtoFactory;
-    LoanOfferDtoFactory loanOfferDtoFactory;
-    OfferService offerService;
+    private final CalculateOfferService calculateOfferService;
+    private final CalculateCreditService calculateCreditService;
 
-    CreditDtoFactory creditDtoFactory;
-    ScoringDataDtoFactory scoringDataDtoFactory;
-    ScoringService scoringService;
-    CreditService creditService;
 
     @Operation(
             summary = "Calculate loan offers",
@@ -78,12 +75,7 @@ public class CalculatorController {
             )
     ) @RequestBody LoanStatementRequestDto request) {
         log.info("Received request for loan offers: {}", request);
-        LoanStatementRequestEntity statement =
-                loanStatementRequestDtoFactory.toEntity(request);
-        List<OfferEntity> offers = offerService.makeOffers(statement);
-        List<LoanOfferDto> offersDto = (List<LoanOfferDto>) offers.stream()
-                .map(loanOfferDtoFactory::toDto)
-                .toList();
+        List<LoanOfferDto> offersDto = calculateOfferService.calculateOffer(request);
         log.info("Calculated loan offers: {}", offersDto);
         return offersDto;
     }
@@ -131,16 +123,7 @@ public class CalculatorController {
             )
     ) @RequestBody @Valid ScoringDataDto scoringData) {
         log.info("Received scoring data for credit calculation: {}", scoringData);
-        ScoringEntity scoringEntity = scoringDataDtoFactory.toEntity(scoringData);
-        CreditEntity credit = scoringService.score(scoringEntity);
-
-
-        if (credit == null) {
-            throw new ValidationException("Scoring failed. Please check the provided data.");
-        }
-
-        creditService.calculateCredit(credit);
-        CreditDto creditDto = creditDtoFactory.toDto(credit);
+        CreditDto creditDto = calculateCreditService.calculateCredit(scoringData);
         log.info("Calculated credit: {}", creditDto);
         return creditDto;
     }

@@ -1,9 +1,9 @@
 package neoflex.calculator.service;
 
+import lombok.RequiredArgsConstructor;
 import neoflex.calculator.service.offer.CalculateOfferService;
 import neoflex.calculator.store.entity.offer.LoanStatementRequestEntity;
 import neoflex.calculator.store.entity.offer.OfferEntity;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -11,12 +11,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 @Component
+@RequiredArgsConstructor
 public class PreScoringService implements OfferService {
     @Value("${constants.rate}")
-    Double rate;
+    private Double rate;
 
-    @Autowired
-    private CalculateOfferService calculateOfferService;
+    private final CalculateOfferService calculateOfferService;
 
     @Override
     public List<OfferEntity> makeOffers(LoanStatementRequestEntity statementRequest) {
