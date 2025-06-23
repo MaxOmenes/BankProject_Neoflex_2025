@@ -1,8 +1,8 @@
 package neoflex.calculator.service.credit;
 
-import neoflex.calculator.store.entity.credit.CreditEntity;
+import neoflex.calculator.api.dto.CreditDto;
 
 public interface CreditService {
 
-    void calculateCredit(CreditEntity entity);
+    void calculateCredit(CreditDto credit);
 }
