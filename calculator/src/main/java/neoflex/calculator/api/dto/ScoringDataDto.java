@@ -7,11 +7,16 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
+@Builder
+@Getter
+@Setter
 public class ScoringDataDto {
     @NotNull
     @Min(value = 20000, message = "Amount must be at least 20,000")

@@ -1,8 +1,8 @@
 package neoflex.calculator.service.credit.payment;
 
 import lombok.extern.slf4j.Slf4j;
-import neoflex.calculator.store.entity.credit.CreditEntity;
-import neoflex.calculator.store.entity.credit.PaymentScheduleEntity;
+import neoflex.calculator.api.dto.CreditDto;
+import neoflex.calculator.api.dto.PaymentScheduleElementDto;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -15,14 +15,14 @@ import java.util.List;
 @Slf4j
 public class CalculateAnnuityPaymentService implements PaymentService{
     @Override
-    public void calculatePaymentSchedule(CreditEntity entity) {
-        BigDecimal amount = entity.getAmount();
-        BigDecimal rate = entity.getRate();
-        Integer term = entity.getTerm();
+    public void calculatePaymentSchedule(CreditDto credit) {
+        BigDecimal amount = credit.getAmount();
+        BigDecimal rate = credit.getRate();
+        Integer term = credit.getTerm();
 
-        BigDecimal remainingAmount = entity.getAmount();
+        BigDecimal remainingAmount = credit.getAmount();
 
-        List<PaymentScheduleEntity> payments = new ArrayList<>();
+        List<PaymentScheduleElementDto> payments = new ArrayList<>();
 
         BigDecimal monthlyRate = rate.divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP)
                 .divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
@@ -38,13 +38,13 @@ public class CalculateAnnuityPaymentService implements PaymentService{
         BigDecimal monthlyPayment = amount.multiply(fraction);
         LocalDate currentDate = LocalDate.now();
 
-        for (int month = 1; month <= entity.getTerm(); month++) {
+        for (int month = 1; month <= credit.getTerm(); month++) {
             BigDecimal interest = remainingAmount.multiply(monthlyRate);
             BigDecimal principal = monthlyPayment.subtract(interest);
 
             remainingAmount = remainingAmount.subtract(principal).max(BigDecimal.ZERO);
 
-            PaymentScheduleEntity payment = PaymentScheduleEntity.builder()
+            PaymentScheduleElementDto payment = PaymentScheduleElementDto.builder()
                     .number(month)
                     .date(currentDate)
                     .totalPayment(monthlyPayment.setScale(2, RoundingMode.HALF_UP))
@@ -61,7 +61,7 @@ public class CalculateAnnuityPaymentService implements PaymentService{
                     payment.getDebtPayment(), payment.getRemainingDebt());
         }
 
-        entity.setPaymentSchedule(payments);
-        entity.setMonthlyPayment(payments.getFirst().getTotalPayment());
+        credit.setPaymentSchedule(payments);
+        credit.setMonthlyPayment(payments.getFirst().getTotalPayment());
     }
 }

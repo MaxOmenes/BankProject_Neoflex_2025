@@ -1,7 +1,7 @@
 package neoflex.calculator.service.credit.payment;
 
-import neoflex.calculator.store.entity.credit.CreditEntity;
+import neoflex.calculator.api.dto.CreditDto;
 
 public interface PaymentService {
-    void calculatePaymentSchedule(CreditEntity entity);
+    void calculatePaymentSchedule(CreditDto credit);
 }

@@ -1,8 +1,12 @@
 package neoflex.calculator.service.scoring;
 
 import lombok.extern.slf4j.Slf4j;
-import neoflex.calculator.store.entity.credit.CreditEntity;
-import neoflex.calculator.store.entity.scoring.ScoringEntity;
+import neoflex.calculator.api.dto.CreditDto;
+import neoflex.calculator.api.dto.ScoringDataDto;
+import neoflex.calculator.store.entity.enums.EmploymentPosition;
+import neoflex.calculator.store.entity.enums.EmploymentStatus;
+import neoflex.calculator.store.entity.enums.Gender;
+import neoflex.calculator.store.entity.enums.MartialStatus;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -21,28 +25,28 @@ public class SimpleScoringService implements ScoringService{
     Double salaryClientRate;
 
     @Override
-    public CreditEntity score(ScoringEntity entity) {
+    public CreditDto score(ScoringDataDto score) {
         BigDecimal currentRate = BigDecimal.valueOf(rate);
 
         //TODO: !!!HOW I THINK!!! best practise for this is to use chain of responsibility pattern, but now I can`t make it, because I have exam in University :)
-        if (entity.getAmount().compareTo(BigDecimal.valueOf(20000)) < 0) {
-            log.info("Refused scoring for amount less than 20000: {}", entity.getAmount());
+        if (score.getAmount().compareTo(BigDecimal.valueOf(20000)) < 0) {
+            log.info("Refused scoring for amount less than 20000: {}", score.getAmount());
             return null;
         }
 
-        if (entity.getTerm() < 6) {
-            log.info("Refused scoring for term less than 6 months: {}", entity.getTerm());
+        if (score.getTerm() < 6) {
+            log.info("Refused scoring for term less than 6 months: {}", score.getTerm());
             return null;
         }
 
-        Integer age = Period.between(entity.getBirthdate(), LocalDate.now()).getYears();
+        Integer age = Period.between(score.getBirthdate(), LocalDate.now()).getYears();
 
         if (age < 20 || age > 65) {
             log.info("Refused scoring for age not in range 20-65: {}", age);
             return null;
         }
 
-        switch (entity.getEmployment().getEmploymentStatus()){
+        switch (EmploymentStatus.valueOf(score.getEmployment().getEmploymentStatus())){
             case UNEMPLOYED:
                 log.info("Refused scoring for unemployed status");
                 return null;
@@ -57,7 +61,7 @@ public class SimpleScoringService implements ScoringService{
                 break;
         }
 
-        switch (entity.getEmployment().getPosition()){
+        switch (EmploymentPosition.valueOf(score.getEmployment().getPosition())){
             case MANAGER:
                 break;
             case MIDDLE_MANAGER:
@@ -70,16 +74,16 @@ public class SimpleScoringService implements ScoringService{
                 break;
         }
 
-        if (entity.getAmount().compareTo(
-                entity.getEmployment().getSalary().multiply(
+        if (score.getAmount().compareTo(
+                score.getEmployment().getSalary().multiply(
                         BigDecimal.valueOf(24)
                 )) > 0
         ){
-            log.info("Refused scoring for amount more than 24 salaries: {}", entity.getAmount());
+            log.info("Refused scoring for amount more than 24 salaries: {}", score.getAmount());
             return null;
         }
 
-        switch (entity.getMaritalStatus()){
+        switch (MartialStatus.valueOf(score.getMaritalStatus())){
             case MARRIED:
                 currentRate = currentRate.subtract(BigDecimal.valueOf(3));
                 break;
@@ -92,7 +96,7 @@ public class SimpleScoringService implements ScoringService{
                 break;
         }
 
-        switch (entity.getGender()){
+        switch (Gender.valueOf(score.getGender())){
             case MALE:
                 if (age >= 30 && age <= 55){
                     currentRate = currentRate.subtract(BigDecimal.valueOf(3));
@@ -111,30 +115,30 @@ public class SimpleScoringService implements ScoringService{
 
         }
 
-        if (entity.getEmployment().getWorkExperienceTotal() < 18) {
-            log.info("Refused scoring for total work experience less than 18 months: {}", entity.getEmployment().getWorkExperienceTotal());
+        if (score.getEmployment().getWorkExperienceTotal() < 18) {
+            log.info("Refused scoring for total work experience less than 18 months: {}", score.getEmployment().getWorkExperienceTotal());
             return null;
         }
 
-        if (entity.getEmployment().getWorkExperienceCurrent() < 3) {
-            log.info("Refused scoring for current work experience less than 3 months: {}", entity.getEmployment().getWorkExperienceCurrent());
+        if (score.getEmployment().getWorkExperienceCurrent() < 3) {
+            log.info("Refused scoring for current work experience less than 3 months: {}", score.getEmployment().getWorkExperienceCurrent());
             return null;
         }
 
-        if (entity.getIsInsuranceEnabled()) {
+        if (score.getIsInsuranceEnabled()) {
             currentRate = currentRate.subtract(BigDecimal.valueOf(insuranceRate));
         }
 
-        if (entity.getIsSalaryClient()) {
+        if (score.getIsSalaryClient()) {
             currentRate = currentRate.subtract(BigDecimal.valueOf(salaryClientRate));
         }
 
-        return CreditEntity.builder()
-                .amount(entity.getAmount())
-                .term(entity.getTerm())
+        return CreditDto.builder()
+                .amount(score.getAmount())
+                .term(score.getTerm())
                 .rate(currentRate)
-                .isInsuranceEnabled(entity.getIsInsuranceEnabled())
-                .isSalaryClient(entity.getIsSalaryClient())
+                .isInsuranceEnabled(score.getIsInsuranceEnabled())
+                .isSalaryClient(score.getIsSalaryClient())
                 .build();
     }
 }

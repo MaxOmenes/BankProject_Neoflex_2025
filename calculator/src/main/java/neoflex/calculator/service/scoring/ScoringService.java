@@ -1,8 +1,8 @@
 package neoflex.calculator.service.scoring;
 
-import neoflex.calculator.store.entity.credit.CreditEntity;
-import neoflex.calculator.store.entity.scoring.ScoringEntity;
+import neoflex.calculator.api.dto.CreditDto;
+import neoflex.calculator.api.dto.ScoringDataDto;
 
 public interface ScoringService {
-    CreditEntity score(ScoringEntity entity);
+    CreditDto score(ScoringDataDto score);
 }

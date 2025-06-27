@@ -1,6 +1,6 @@
 package neoflex.calculator.service.credit;
 
-import neoflex.calculator.store.entity.credit.CreditEntity;
+import neoflex.calculator.api.dto.CreditDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +15,7 @@ class CalculateAnnuityCreditServiceTest {
     @Test
     void calculateCredit() {
         // Create test data for credit calculation
-        CreditEntity creditEntity = CreditEntity.builder()
+        CreditDto creditEntity = CreditDto.builder()
                 .amount(BigDecimal.valueOf(100000))
                 .term(36)
                 .rate(BigDecimal.valueOf(26.5))

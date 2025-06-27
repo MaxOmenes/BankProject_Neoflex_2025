@@ -1,9 +1,9 @@
 package neoflex.calculator.service.insurance;
 
 import lombok.extern.slf4j.Slf4j;
-import neoflex.calculator.store.entity.credit.CreditEntity;
-import neoflex.calculator.store.entity.credit.PaymentScheduleEntity;
-import neoflex.calculator.store.entity.offer.OfferEntity;
+import neoflex.calculator.api.dto.CreditDto;
+import neoflex.calculator.api.dto.LoanOfferDto;
+import neoflex.calculator.api.dto.PaymentScheduleElementDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -21,22 +21,23 @@ public class SimpleInsuranceService implements InsuranceService{
     /**
      * Calculates the insurance payments for the offer.
      * Calculating yearly insurance payments based on the remaining amount and insurance policy rate.
-     * @param entity OfferEntity containing the loan details
+     *
+     * @param offer OfferEntity containing the loan details
      * @return List of insurance payments
      */
     @Override
-    public List<BigDecimal> calculateInsurance(OfferEntity entity) {
+    public List<BigDecimal> calculateInsurance(LoanOfferDto offer) {
         List<BigDecimal> insurancePayments = new ArrayList<>();
-        BigDecimal remainingAmount = entity.getRequestedAmount();
+        BigDecimal remainingAmount = offer.getRequestedAmount();
 
-        BigDecimal monthlyRate = entity.getRate().divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP)
+        BigDecimal monthlyRate = offer.getRate().divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP)
                 .divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP);
-        BigDecimal monthlyPayment = entity.getMonthlyPayment();
+        BigDecimal monthlyPayment = offer.getMonthlyPayment();
         BigDecimal insuranceForMultiplyRate = insurancePolicyRate.divide(
                 BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP
         );
 
-        for (int month = 1; month <= entity.getTerm(); month++) {
+        for (int month = 1; month <= offer.getTerm(); month++) {
             if ((month-1) % 12 == 0 && remainingAmount.signum() > 0) {
                 BigDecimal insurancePayment = remainingAmount.multiply(insuranceForMultiplyRate);
                 insurancePayments.add(insurancePayment);
@@ -51,15 +52,15 @@ public class SimpleInsuranceService implements InsuranceService{
     }
 
     @Override
-    public List<BigDecimal> calculateInsurance(CreditEntity entity) {
+    public List<BigDecimal> calculateInsurance(CreditDto credit) {
         List<BigDecimal> insurancePayments = new ArrayList<>();
-        List<PaymentScheduleEntity> payments = entity.getPaymentSchedule();
+        List<PaymentScheduleElementDto> payments = credit.getPaymentSchedule();
 
         BigDecimal insuranceForMultiplyRate = insurancePolicyRate.divide(
                 BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP
         );
 
-        for (PaymentScheduleEntity payment : payments) {
+        for (PaymentScheduleElementDto payment : payments) {
             if (payment.getNumber()-1 % 12 == 0) {
                 BigDecimal insurancePayment = payment.getRemainingDebt().add(payment.getDebtPayment()).multiply(insuranceForMultiplyRate);
                 insurancePayments.add(insurancePayment);

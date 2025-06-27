@@ -1,7 +1,6 @@
 package neoflex.calculator.service.offer;
 
-import neoflex.calculator.store.entity.offer.OfferEntity;
-import org.junit.jupiter.api.BeforeAll;
+import neoflex.calculator.api.dto.LoanOfferDto;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -17,23 +16,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-class CalculateAnnuityOfferServiceTest {
+class CalculateAnnuityPreScoringServiceTest {
     @Autowired
     CalculateAnnuityOfferService service;
 
     static Method setInsuranceRateMethod;
     static Method setSalaryClientRateMethod;
     static BigDecimal EPSILON = BigDecimal.valueOf(1);
-
-    @BeforeAll
-    static void setUp() throws NoSuchMethodException {
-        Object builder = OfferEntity.builder();
-        Class<?> builderClass = builder.getClass();
-        setInsuranceRateMethod = builderClass.getDeclaredMethod("setInsuranceRate", Double.class);
-        setSalaryClientRateMethod = builderClass.getDeclaredMethod("setSalaryClientRate", Double.class);
-        setInsuranceRateMethod.setAccessible(true);
-        setSalaryClientRateMethod.setAccessible(true);
-    }
 
     /**
      * Test based on example from Raiffeisen Bank:
@@ -44,7 +33,7 @@ class CalculateAnnuityOfferServiceTest {
     @Test
     void testCalculateOffer_RaiffeisenExample() {
 
-        OfferEntity offer = OfferEntity.builder()
+        LoanOfferDto offer = LoanOfferDto.builder()
                 .requestedAmount(new BigDecimal("20000"))
                 .term(36)
                 .rate(new BigDecimal("12"))
@@ -64,15 +53,20 @@ class CalculateAnnuityOfferServiceTest {
     void testCalculateOffer(int requestedAmount, int term, Double rate, Double expectedMonthlyPayment,
                            Double expectedTotalAmount, boolean isInsuranceEnabled, boolean isSalaryClient) throws InvocationTargetException, IllegalAccessException {
 
-        OfferEntity.Builder offerBuilder = OfferEntity.builder();
+        BigDecimal currentRate = BigDecimal.valueOf(rate); //TODO: (!!!) This is not checking of prescoring, just a simple calculation (!!!)
 
-        setSalaryClientRateMethod.invoke(offerBuilder, Double.valueOf(1.5));
-        setInsuranceRateMethod.invoke(offerBuilder, Double.valueOf(2));
+        if (isInsuranceEnabled) {
+            currentRate = currentRate.subtract(BigDecimal.valueOf(2));
+        }
 
-        OfferEntity offer = offerBuilder
+        if (isSalaryClient) {
+            currentRate = currentRate.subtract(BigDecimal.valueOf(1.5));
+        }
+
+        LoanOfferDto offer = LoanOfferDto.builder()
                 .requestedAmount(new BigDecimal(requestedAmount))
                 .term(term)
-                .rate(new BigDecimal(rate))
+                .rate(currentRate)
                 .isInsuranceEnabled(isInsuranceEnabled)
                 .isSalaryClient(isSalaryClient)
                 .build();

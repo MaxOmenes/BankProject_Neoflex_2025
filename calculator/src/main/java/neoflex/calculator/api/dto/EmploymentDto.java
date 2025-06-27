@@ -3,10 +3,15 @@ package neoflex.calculator.api.dto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 @Data
+@Builder
+@Getter
+@Setter
 public class EmploymentDto {
     @Schema(description ="Status of employment, e.g. 'Employed', 'Unemployed', 'Self-employed', 'Business-owner'")
     private String employmentStatus;

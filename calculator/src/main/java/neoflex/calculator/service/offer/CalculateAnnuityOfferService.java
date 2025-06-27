@@ -2,8 +2,8 @@ package neoflex.calculator.service.offer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import neoflex.calculator.api.dto.LoanOfferDto;
 import neoflex.calculator.service.insurance.InsuranceService;
-import neoflex.calculator.store.entity.offer.OfferEntity;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class CalculateAnnuityOfferService implements CalculateOfferService{
+public class CalculateAnnuityOfferService implements OfferService {
 
     private final InsuranceService insuranceService;
 
@@ -27,13 +27,14 @@ public class CalculateAnnuityOfferService implements CalculateOfferService{
      * <p><a href="https://www.raiffeisen.ru/wiki/kak-rasschitat-annuitetnyj-platezh/">
      *     How to calculate annuity payment on a loan | Raiffeisen Bank
      * </a>
-     * @param entity OfferEntity containing the loan details
+     *
+     * @param offer OfferEntity containing the loan details
      */
     @Override
-    public void calculateOffer(OfferEntity entity) {
-        BigDecimal requestedAmount = entity.getRequestedAmount();
-        BigDecimal rate = entity.getRate();
-        Integer term = entity.getTerm();
+    public void calculateOffer(LoanOfferDto offer) {
+        BigDecimal requestedAmount = offer.getRequestedAmount();
+        BigDecimal rate = offer.getRate();
+        Integer term = offer.getTerm();
 
         BigDecimal monthlyRate = rate.divide(BigDecimal.valueOf(12), 10, RoundingMode.HALF_UP)
                 .divide(BigDecimal.valueOf(100), 10, RoundingMode.HALF_UP);
@@ -48,17 +49,17 @@ public class CalculateAnnuityOfferService implements CalculateOfferService{
 
         BigDecimal monthlyPayment = requestedAmount.multiply(fraction);
 
-        entity.setMonthlyPayment(monthlyPayment);
+        offer.setMonthlyPayment(monthlyPayment);
         BigDecimal totalAmount = monthlyPayment.multiply(BigDecimal.valueOf(term));
 
-        if (entity.getIsInsuranceEnabled()) {
-            List<BigDecimal> insurancePayments = insuranceService.calculateInsurance(entity);
+        if (offer.getIsInsuranceEnabled()) {
+            List<BigDecimal> insurancePayments = insuranceService.calculateInsurance(offer);
             BigDecimal totalInsurance = insurancePayments.stream()
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
             totalAmount = totalAmount.add(totalInsurance);
         }
 
-        entity.setTotalAmount(totalAmount);
-        log.info("Calculated offer: {}", entity);
+        offer.setTotalAmount(totalAmount);
+        log.info("Calculated offer: {}", offer);
     }
 }
