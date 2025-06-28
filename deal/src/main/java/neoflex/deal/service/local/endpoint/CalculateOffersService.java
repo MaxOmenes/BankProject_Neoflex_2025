@@ -39,7 +39,7 @@ public class CalculateOffersService {
                 .firstName(statementRequest.getFirstName())
                 .lastName(statementRequest.getLastName())
                 .middleName(statementRequest.getMiddleName())
-                .birthDate(statementRequest.getBirthdate())
+                .birthdate(statementRequest.getBirthdate())
                 .email(statementRequest.getEmail())
                 .passport(passport)
                 .build();

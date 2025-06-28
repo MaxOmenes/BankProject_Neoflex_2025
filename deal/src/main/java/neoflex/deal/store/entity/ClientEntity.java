@@ -1,6 +1,5 @@
 package neoflex.deal.store.entity;
 
-import jakarta.annotation.Generated;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,7 +10,6 @@ import neoflex.deal.api.dto.EmploymentDto;
 import neoflex.deal.store.enums.client.Gender;
 import neoflex.deal.store.enums.client.MaritalStatus;
 import neoflex.deal.api.dto.PassportDto;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -36,7 +34,7 @@ public class ClientEntity {
 
     private String middleName;
 
-    private LocalDate birthDate;
+    private LocalDate birthdate;
 
     private String email;
 

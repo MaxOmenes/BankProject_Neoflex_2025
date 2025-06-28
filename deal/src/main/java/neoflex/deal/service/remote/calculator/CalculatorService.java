@@ -1,8 +1,10 @@
 package neoflex.deal.service.remote.calculator;
 
 import lombok.AllArgsConstructor;
+import neoflex.deal.api.dto.CreditDto;
 import neoflex.deal.api.dto.LoanOfferDto;
 import neoflex.deal.api.dto.LoanStatementRequestDto;
+import neoflex.deal.api.dto.ScoringDataDto;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Component;
@@ -23,5 +25,13 @@ public class CalculatorService {
                 .retrieve()
                 .body(new ParameterizedTypeReference<List<LoanOfferDto>>() {
                 });
+    }
+
+    public CreditDto calc(ScoringDataDto scoringData) {
+        return calculatorRestClient.post()
+                .uri("/calc")
+                .body(scoringData)
+                .retrieve()
+                .body(CreditDto.class);
     }
 }

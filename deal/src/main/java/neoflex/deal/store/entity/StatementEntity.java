@@ -37,6 +37,7 @@ public class StatementEntity {
     private CreditEntity credit;
 
     @Nullable
+    @Enumerated(EnumType.STRING)
     private ApplicationStatus status;
 
     private LocalDate creationDate;

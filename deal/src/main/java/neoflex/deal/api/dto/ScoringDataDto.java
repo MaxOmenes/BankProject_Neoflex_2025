@@ -1,4 +1,4 @@
-package neoflex.calculator.api.dto;
+package neoflex.deal.api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Min;
@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import neoflex.deal.store.enums.client.Gender;
+import neoflex.deal.store.enums.client.MaritalStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -54,11 +56,9 @@ public class ScoringDataDto {
     @Schema(description = "Client's middle name (if exists)")
     private String middleName;
 
-    //TODO: ASK HOW TO VALID
     @Schema(description = "Client's gender")
-    private String gender;
+    private Gender gender;
 
-    //TODO: ASK HOW TO VALID (MAYBE ONLY IN SCORING)
     @Schema(description = "Client's birthdate")
     private LocalDate birthdate;
 
@@ -76,14 +76,12 @@ public class ScoringDataDto {
     @Schema(description = "The name or code of the government authority that issued the passport")
     private String passportIssueBranch;
 
-    //TODO: ASK HOW TO VALIDATE
     @Schema(description = "Is client married or not")
-    private String maritalStatus;
+    private MaritalStatus maritalStatus;
 
     @Schema(description = "The number of people financially dependent on the client (such as children, elderly parents, or other family members the client supports)")
     private Integer dependentAmount;
 
-    //TODO: CAN ADD VALID ANNOTATION FOR EMPLOYMENT
     @NotNull
     @Schema(description = "The income of the client, including salary, bonuses, and other forms of compensation")
     private EmploymentDto employment;

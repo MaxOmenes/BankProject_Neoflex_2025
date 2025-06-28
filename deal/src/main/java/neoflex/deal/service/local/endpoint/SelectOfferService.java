@@ -4,11 +4,13 @@ import lombok.AllArgsConstructor;
 import neoflex.deal.api.dto.LoanOfferDto;
 import neoflex.deal.api.dto.StatementStatusHistoryDto;
 import neoflex.deal.store.entity.StatementEntity;
+import neoflex.deal.store.enums.statement.ApplicationStatus;
 import neoflex.deal.store.enums.statement.status_history.ChangeType;
 import neoflex.deal.store.repository.StatementRepository;
 import org.springframework.stereotype.Service;
 
 import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.Optional;
 
 @Service
@@ -25,8 +27,16 @@ public class SelectOfferService {
 
         statementEntity.getStatusHistory().add(StatementStatusHistoryDto.builder()
                         .changeType(ChangeType.MANUAL)
-                        .status()
-                .build());
+                        .status(ApplicationStatus.APPROVED)
+                        .timestamp(LocalDate.now())
+                .build()
+        );
+
+        statementEntity.setAppliedOffer(offer);
+
+        statementEntity.setStatus(ApplicationStatus.APPROVED);
+
+        statementRepository.save(statementEntity);
 
 
     }
