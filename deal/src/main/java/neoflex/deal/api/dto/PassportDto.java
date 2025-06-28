@@ -1,7 +1,11 @@
 package neoflex.deal.api.dto;
 
-import java.util.UUID;
+import lombok.Builder;
+import lombok.Data;
 
+import java.util.UUID;
+@Data
+@Builder
 public class PassportDto {
     private UUID passport_uuid;
     private String series;

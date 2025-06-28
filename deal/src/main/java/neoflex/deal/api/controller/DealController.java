@@ -7,10 +7,7 @@ import neoflex.deal.api.dto.LoanStatementRequestDto;
 import neoflex.deal.service.local.endpoint.CalculateCreditService;
 import neoflex.deal.service.local.endpoint.CalculateOffersService;
 import neoflex.deal.service.local.endpoint.SelectOfferService;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,18 +19,19 @@ public class DealController {
     private final CalculateOffersService calculateOffersService;
     private final SelectOfferService selectOfferService;
 
-    @RequestMapping("/statement")
+    @PostMapping("/statement")
     public List<LoanOfferDto> calculateOffers(@RequestBody LoanStatementRequestDto request){
         return calculateOffersService.makeOffers(request);
     }
 
-    @RequestMapping("/offer/select")
+    @PostMapping("/offer/select")
     public void selectOffer(@RequestBody LoanOfferDto request){
         selectOfferService.selectOffer(request);
     }
 
-    @RequestMapping("/calculate/{statementId}")
-    public void calculateCredit(@PathVariable String statementId, @RequestBody FinishRegistrationRequestDto request){
+    @PostMapping("/calculate/{statementId}")
+    public void calculateCredit(@PathVariable String statementId,
+                                @RequestBody FinishRegistrationRequestDto request){
         calculateCreditService.calculateCredit(statementId, request);
     }
 }
