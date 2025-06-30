@@ -16,3 +16,6 @@ server:
 service:
   calculator:
     url: http://localhost:8080/calculator
+    path:
+      offers: /offers
+      calculate: /calc

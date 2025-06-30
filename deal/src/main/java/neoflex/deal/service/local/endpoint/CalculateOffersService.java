@@ -1,6 +1,6 @@
 package neoflex.deal.service.local.endpoint;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import neoflex.deal.api.dto.LoanOfferDto;
 import neoflex.deal.api.dto.LoanStatementRequestDto;
@@ -21,14 +21,15 @@ import java.util.UUID;
 
 @Service
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CalculateOffersService {
     private final CalculatorService calculatorService;
     private final ClientRepository clientRepository;
     private final StatementRepository statementRepository;
-    public List<LoanOfferDto> makeOffers(LoanStatementRequestDto statementRequest){
+
+    public List<LoanOfferDto> makeOffers(LoanStatementRequestDto statementRequest) {
         PassportDto passport = PassportDto.builder()
-                .passport_uuid(UUID.randomUUID())
+                .passportUuid(UUID.randomUUID())
                 .series(statementRequest.getPassportSeries())
                 .number(statementRequest.getPassportNumber())
                 .build();
@@ -55,9 +56,9 @@ public class CalculateOffersService {
                 .status(ApplicationStatus.PREAPPROVAL)
                 .creationDate(LocalDate.now())
                 .statusHistory(List.of(StatementStatusHistoryDto.builder()
-                                .changeType(ChangeType.MANUAL) //TODO: (!) when it change?
-                                .timestamp(LocalDate.now())
-                                .status(ApplicationStatus.PREAPPROVAL)
+                        .changeType(ChangeType.MANUAL) //TODO: (!) when it change?
+                        .timestamp(LocalDate.now())
+                        .status(ApplicationStatus.PREAPPROVAL)
                         .build()))
                 .build();
 

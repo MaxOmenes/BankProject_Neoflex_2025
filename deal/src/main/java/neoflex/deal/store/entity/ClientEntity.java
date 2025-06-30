@@ -1,15 +1,12 @@
 package neoflex.deal.store.entity;
 
 import jakarta.annotation.Nullable;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 import neoflex.deal.api.dto.EmploymentDto;
+import neoflex.deal.api.dto.PassportDto;
 import neoflex.deal.store.enums.client.Gender;
 import neoflex.deal.store.enums.client.MaritalStatus;
-import neoflex.deal.api.dto.PassportDto;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
@@ -17,6 +14,7 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+@Table(name = "client")
 @Builder
 @Getter
 @Setter

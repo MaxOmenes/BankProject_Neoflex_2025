@@ -14,12 +14,10 @@ import java.util.UUID;
 
 @Data
 @Builder
-@Getter
-@Setter
 public class EmploymentDto {
     @Nullable
     @Schema(description = "Unique identifier of the employment record")
-    private UUID employment_uuid;
+    private UUID employmentUuid;
 
     @Nullable
     @Schema(description ="Status of employment, e.g. 'Employed', 'Unemployed', 'Self-employed', 'Business-owner'")

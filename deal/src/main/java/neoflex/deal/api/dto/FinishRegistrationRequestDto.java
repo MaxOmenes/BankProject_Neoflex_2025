@@ -12,8 +12,6 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-@Getter
-@Setter
 public class FinishRegistrationRequestDto {
     @Schema(description = "Gender of the client, e.g. 'MALE', 'FEMALE'")
     private Gender gender;

@@ -1,6 +1,6 @@
 package neoflex.deal.service.local.endpoint;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import neoflex.deal.api.dto.*;
 import neoflex.deal.service.remote.calculator.CalculatorService;
 import neoflex.deal.store.entity.ClientEntity;
@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CalculateCreditService {
     private final StatementRepository statementRepository;
     private final CreditRepository creditRepository;
@@ -42,7 +42,7 @@ public class CalculateCreditService {
         }
 
         EmploymentDto employmentDto = registrationRequest.getEmployment();
-        employmentDto.setEmployment_uuid(UUID.randomUUID());
+        employmentDto.setEmploymentUuid(UUID.randomUUID());
 
         client.setGender(registrationRequest.getGender());
         client.setMaritalStatus(registrationRequest.getMaritalStatus());

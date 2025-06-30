@@ -8,9 +8,6 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@ToString
 public class LoanStatementRequestDto {
    @Schema(description = "How much client want to get")
    private BigDecimal amount;

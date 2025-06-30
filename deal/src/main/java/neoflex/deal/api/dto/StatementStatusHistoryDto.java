@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @Builder
 public class StatementStatusHistoryDto {
     private ApplicationStatus status;
-
     private LocalDate timestamp; //TODO: in spec it`s time, maybe change
 
     @Nullable
