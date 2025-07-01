@@ -39,6 +39,10 @@ public class CalculateOffersService {
         log.info("Statement saved with ID: {}", statement.getStatementId());
 
         List<LoanOfferDto> offers = calculatorService.offers(statementRequest);
+        if (offers.isEmpty()) {
+            log.warn("No offers calculated for statement ID: {}", statement.getStatementId());
+            return List.of();
+        }
         log.info("Offers calculated: {}", offers);
 
         UUID statementId = statement.getStatementId();
