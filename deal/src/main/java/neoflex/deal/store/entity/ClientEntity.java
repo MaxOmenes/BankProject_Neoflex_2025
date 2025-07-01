@@ -37,9 +37,11 @@ public class ClientEntity {
     private String email;
 
     @Nullable
+    @Enumerated(EnumType.STRING)
     private Gender gender;     //TODO: in spec it`s varchar, maybe change to String
 
     @Nullable
+    @Enumerated(EnumType.STRING)
     private MaritalStatus maritalStatus; //TODO: in spec it`s varchar, maybe change to String
 
     private Integer dependentAmount; //TODO: in spec it`s int, maybe change to BigDecimal

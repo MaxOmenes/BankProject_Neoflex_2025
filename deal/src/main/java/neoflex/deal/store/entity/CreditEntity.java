@@ -42,5 +42,6 @@ public class CreditEntity {
 
     private Boolean salaryClient;
 
+    @Enumerated(EnumType.STRING)
     private CreditStatus creditStatus;
 }

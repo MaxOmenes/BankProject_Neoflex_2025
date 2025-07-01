@@ -3,6 +3,7 @@ package neoflex.deal.service.local.endpoint;
 import lombok.RequiredArgsConstructor;
 import neoflex.deal.api.dto.LoanOfferDto;
 import neoflex.deal.api.dto.StatementStatusHistoryDto;
+import neoflex.deal.service.local.fabric.StatementStatusHistoryFabric;
 import neoflex.deal.store.entity.StatementEntity;
 import neoflex.deal.store.enums.statement.ApplicationStatus;
 import neoflex.deal.store.enums.statement.status_history.ChangeType;
@@ -16,28 +17,20 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SelectOfferService {
     private final StatementRepository statementRepository;
+    private final StatementStatusHistoryFabric statementStatusHistoryFabric;
 
     public void selectOffer(LoanOfferDto offer) {
-        Optional<StatementEntity> statement = statementRepository.findById(offer.getStatementId());
-
-        if (statement.isEmpty()) {
-            throw new IllegalArgumentException("Statement not found for ID: " + offer.getStatementId());
-        }
-        StatementEntity statementEntity = statement.get();
-
-        statementEntity.getStatusHistory().add(StatementStatusHistoryDto.builder()
-                .changeType(ChangeType.MANUAL)
-                .status(ApplicationStatus.APPROVED)
-                .timestamp(LocalDate.now())
-                .build()
+        StatementEntity statement = statementRepository.findById(offer.getStatementId()).orElseThrow(
+                () -> new IllegalArgumentException("Statement not found for ID: " + offer.getStatementId())
         );
 
-        statementEntity.setAppliedOffer(offer);
+        statement.getStatusHistory()
+                .add(statementStatusHistoryFabric.create(ApplicationStatus.APPROVED)
+                );
 
-        statementEntity.setStatus(ApplicationStatus.APPROVED);
+        statement.setAppliedOffer(offer);
+        statement.setStatus(ApplicationStatus.APPROVED);
 
-        statementRepository.save(statementEntity);
-
-
+        statementRepository.save(statement);
     }
 }
