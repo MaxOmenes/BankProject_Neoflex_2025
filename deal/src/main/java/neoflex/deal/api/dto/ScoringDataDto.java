@@ -17,8 +17,6 @@ import java.time.LocalDate;
 
 @Data
 @Builder
-@Getter
-@Setter
 public class ScoringDataDto {
     @NotNull
     @Min(value = 20000, message = "Amount must be at least 20,000")
