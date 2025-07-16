@@ -9,3 +9,6 @@ service:
     path:
       statement: /statement
       select-offer: /offer/select
+wiremock:
+  server:
+    baseUrl: http://localhost:8081/deal

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd">
+
+    <changeSet id="1" author="MaxOmenes">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="client"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="client">
+            <column name="client_id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="pk_client"/>
+            </column>
+            <column name="last_name" type="VARCHAR(255)"/>
+            <column name="first_name" type="VARCHAR(255)"/>
+            <column name="middle_name" type="VARCHAR(255)"/>
+            <column name="birthdate" type="DATE"/>
+            <column name="email" type="VARCHAR(255)"/>
+            <column name="gender" type="VARCHAR(255)"/>
+            <column name="marital_status" type="VARCHAR(255)"/>
+            <column name="dependent_amount" type="INT"/>
+            <column name="passport" type="jsonb"/>
+            <column name="employment_dto" type="jsonb"/>
+            <column name="account_number" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="MaxOmenes">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="credit"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="credit">
+            <column name="credit_id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="pk_credit"/>
+            </column>
+            <column name="amount" type="DECIMAL"/>
+            <column name="term" type="INT"/>
+            <column name="monthly_payment" type="DECIMAL"/>
+            <column name="rate" type="DECIMAL"/>
+            <column name="psk" type="DECIMAL"/>
+            <column name="payment_schedule" type="jsonb"/>
+            <column name="insurance_enabled" type="BOOLEAN"/>
+            <column name="salary_client" type="BOOLEAN"/>
+            <column name="credit_status" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="3" author="MaxOmenes">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="statement"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="statement">
+            <column name="statement_id" type="UUID">
+                <constraints primaryKey="true" primaryKeyName="pk_statement"/>
+            </column>
+            <column name="client_id" type="UUID"/>
+            <column name="credit_id" type="UUID"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="creation_date" type="DATE"/>
+            <column name="applied_offer" type="jsonb"/>
+            <column name="sign_date" type="DATE"/>
+            <column name="ses_code" type="VARCHAR(255)"/>
+            <column name="status_history" type="jsonb"/>
+        </createTable>
+
+        <addUniqueConstraint columnNames="client_id" constraintName="uc_statement_client" tableName="statement"/>
+
+        <addUniqueConstraint columnNames="credit_id" constraintName="uc_statement_credit" tableName="statement"/>
+
+        <addForeignKeyConstraint baseColumnNames="client_id" baseTableName="statement"
+                                 constraintName="FK_STATEMENT_ON_CLIENT" referencedColumnNames="client_id"
+                                 referencedTableName="client"/>
+
+        <addForeignKeyConstraint baseColumnNames="credit_id" baseTableName="statement"
+                                 constraintName="FK_STATEMENT_ON_CREDIT" referencedColumnNames="credit_id"
+                                 referencedTableName="credit"/>
+    </changeSet>
+</databaseChangeLog>

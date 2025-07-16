@@ -1,4 +1,4 @@
-package neoflex.statement.configuration;
+package neoflex.deal.configuration;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;

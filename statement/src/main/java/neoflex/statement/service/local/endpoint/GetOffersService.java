@@ -1,6 +1,7 @@
 package neoflex.statement.service.local.endpoint;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import neoflex.statement.api.dto.LoanOfferDto;
 import neoflex.statement.api.dto.LoanStatementRequestDto;
 import neoflex.statement.service.remote.deal.DealService;
