@@ -1,17 +1,12 @@
-package neoflex.deal.service.local.endpoint;
+package neoflex.deal.service.local.endpoint.offer;
 
 import lombok.RequiredArgsConstructor;
 import neoflex.deal.api.dto.LoanOfferDto;
-import neoflex.deal.api.dto.StatementStatusHistoryDto;
 import neoflex.deal.service.local.fabric.StatementStatusHistoryFabric;
 import neoflex.deal.store.entity.StatementEntity;
 import neoflex.deal.store.enums.statement.ApplicationStatus;
-import neoflex.deal.store.enums.statement.status_history.ChangeType;
 import neoflex.deal.store.repository.StatementRepository;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

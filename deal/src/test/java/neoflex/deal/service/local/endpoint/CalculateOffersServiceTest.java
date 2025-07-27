@@ -2,6 +2,7 @@ package neoflex.deal.service.local.endpoint;
 
 import neoflex.deal.api.dto.LoanOfferDto;
 import neoflex.deal.api.dto.LoanStatementRequestDto;
+import neoflex.deal.service.local.endpoint.statement.CalculateOffersService;
 import neoflex.deal.service.local.fabric.ClientEntityFabric;
 import neoflex.deal.service.local.fabric.StatementEntityFabric;
 import neoflex.deal.service.remote.calculator.CalculatorService;

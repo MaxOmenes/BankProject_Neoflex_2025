@@ -8,9 +8,12 @@ import lombok.RequiredArgsConstructor;
 import neoflex.deal.api.dto.FinishRegistrationRequestDto;
 import neoflex.deal.api.dto.LoanOfferDto;
 import neoflex.deal.api.dto.LoanStatementRequestDto;
-import neoflex.deal.service.local.endpoint.CalculateCreditService;
-import neoflex.deal.service.local.endpoint.CalculateOffersService;
-import neoflex.deal.service.local.endpoint.SelectOfferService;
+import neoflex.deal.service.local.endpoint.calculate.CalculateCreditService;
+import neoflex.deal.service.local.endpoint.document.SendDocumentsService;
+import neoflex.deal.service.local.endpoint.document.SignDocumentsService;
+import neoflex.deal.service.local.endpoint.document.SendSesCodeService;
+import neoflex.deal.service.local.endpoint.statement.CalculateOffersService;
+import neoflex.deal.service.local.endpoint.offer.SelectOfferService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +25,10 @@ public class DealController {
     private final CalculateCreditService calculateCreditService;
     private final CalculateOffersService calculateOffersService;
     private final SelectOfferService selectOfferService;
+
+    private final SendDocumentsService sendDocumentsService;
+    private final SendSesCodeService sendSesCodeService;
+    private final SignDocumentsService signDocumentsService;
 
     @Operation(
             summary = "Calculate loan offers",
@@ -116,4 +123,21 @@ public class DealController {
                                 @RequestBody FinishRegistrationRequestDto request) {
         calculateCreditService.calculateCredit(statementId, request);
     }
+
+    @PostMapping("/document/{statementId}/send") //TODO: ADD DOCS AND EXAMPLES
+    public void sendDocument(@PathVariable String statementId) {
+        sendDocumentsService.sendDocuments(statementId);
+    }
+
+    @PostMapping("/document/{statementId}/code") //TODO: ADD DOCS AND EXAMPLES
+    public void sendSes(@PathVariable String statementId) {
+        //TODO: REJECT LOGIC
+        sendSesCodeService.sendSes(statementId);
+    }
+
+    @PostMapping("/document/{statementId}/sign") //TODO: ADD DOCS AND EXAMPLES
+    public void signDocument(@PathVariable String statementId) {
+        signDocumentsService.signDocuments(statementId);
+    }
+
 }
