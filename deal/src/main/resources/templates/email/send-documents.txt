@@ -1,0 +1,2 @@
+Dear [(${client.firstName})] [# th:if="${client.middleName != null}"][(${client.middleName})] [/][(${client.lastName})],
+Please find attached the documents related to your loan application.

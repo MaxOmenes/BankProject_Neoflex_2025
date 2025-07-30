@@ -18,6 +18,10 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .txt
+    mode: TEXT
 server:
   port: 8081
 service:

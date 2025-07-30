@@ -1,0 +1,6 @@
+Dear [(${client.firstName})] [# th:if="${client.middleName != null}"][(${client.middleName})] [/][(${client.lastName})],
+Your documents have been prepared for signing.
+Please review and sign them in your personal account.
+
+Your sign code:
+[(${statement.getSesCode()})]
