@@ -40,7 +40,7 @@ public class SendDocumentsService {
         EmailMessageDto message = EmailMessageDto.builder()
                 .address(client.getEmail())
                 .statementId(statement.getStatementId())
-                .subject(Subject.SEND_DOCUMENTS) //TODO:CHANGE EMAIL TEXT
+                .subject(Subject.SEND_DOCUMENTS)
                 .text(emailText)
                 .build();
 

@@ -124,20 +124,32 @@ public class DealController {
         calculateCreditService.calculateCredit(statementId, request);
     }
 
-    @PostMapping("/document/{statementId}/send") //TODO: ADD DOCS AND EXAMPLES
+    @Operation(
+            summary = "Send documents",
+            description = "Send documents to clients email"
+    )
+    @PostMapping("/document/{statementId}/send")
     public void sendDocument(@PathVariable String statementId) {
         sendDocumentsService.sendDocuments(statementId);
     }
 
-    @PostMapping("/document/{statementId}/code") //TODO: ADD DOCS AND EXAMPLES
+    @Operation(
+            summary = "Send SES code",
+            description = "Send SES code to clients email"
+    )
+    @PostMapping("/document/{statementId}/code")
     public void sendSes(@PathVariable String statementId) {
         //TODO: REJECT LOGIC
         sendSesCodeService.sendSes(statementId);
     }
 
-    @PostMapping("/document/{statementId}/sign") //TODO: ADD DOCS AND EXAMPLES
-    public void signDocument(@PathVariable String statementId) {
-        signDocumentsService.signDocuments(statementId);
+    @Operation(
+            summary = "Send sign notification",
+            description = "Send notification that documents are signed"
+    )
+    @PostMapping("/document/{statementId}/sign")
+    public void signDocument(@PathVariable String statementId, @RequestParam(defaultValue = "false") boolean refused) {
+        signDocumentsService.signDocuments(statementId, refused);
     }
 
 }

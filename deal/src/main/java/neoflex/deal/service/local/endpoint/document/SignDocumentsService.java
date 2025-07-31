@@ -13,6 +13,7 @@ import neoflex.deal.store.enums.statement.ApplicationStatus;
 import neoflex.deal.store.repository.StatementRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.Map;
 import java.util.UUID;
 
@@ -25,14 +26,33 @@ public class SignDocumentsService {
     private final StatementRepository statementRepository;
     private final EmailTemplateService emailTemplateService;
 
-    public void signDocuments(String statementId) {
+    public void signDocuments(String statementId, boolean refused) {
         StatementEntity statement = statementRepository.findById(UUID.fromString(statementId)).get(); //TODO: Handle Optional properly
         ClientEntity client = statement.getClient();
+
+        if (refused){
+            statement.setStatus(ApplicationStatus.CLIENT_DENIED);
+            Map<String, Object> templateData = Map.of(
+                    "client", client
+            );
+
+            String emailText = emailTemplateService.processTemplate("email/statement-denied", templateData);
+
+            EmailMessageDto message = EmailMessageDto.builder()
+                    .address(client.getEmail())
+                    .statementId(statement.getStatementId())
+                    .subject(Subject.STATEMENT_DENIED)
+                    .text(emailText)
+                    .build();
+
+            dossierService.statementDenied(message);
+        }
 
         log.info("Signing documents for statement with ID: {}", statementId);
         signClientDocumentsService.signDocuments(statement);
         log.info("Documents signed for statement with ID: {}", statementId);
         statement.setStatus(ApplicationStatus.CREDIT_ISSUED);
+        statement.setSignDate(LocalDate.now());
         statementRepository.save(statement);
 
         Map<String, Object> templateData = Map.of(
