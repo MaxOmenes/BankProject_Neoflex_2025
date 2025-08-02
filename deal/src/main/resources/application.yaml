@@ -13,6 +13,17 @@ spring:
       dialect: postgresql
   liquibase:
     change-log: db/changelog/init-changelog.xml
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: false
+  thymeleaf:
+    prefix: classpath:/templates/
+    suffix: .txt
+    mode: TEXT
 server:
   port: 8081
 service:
@@ -21,3 +32,23 @@ service:
     path:
       offers: /offers
       calculate: /calc
+messaging:
+  topics:
+    - name: finish-registration
+      partitions: 1
+      replicas: 1
+    - name: create-documents
+      partitions: 1
+      replicas: 1
+    - name: send-documents
+      partitions: 1
+      replicas: 1
+    - name: send-ses
+      partitions: 1
+      replicas: 1
+    - name: credit-issued
+      partitions: 1
+      replicas: 1
+    - name: statement-denied
+      partitions: 1
+      replicas: 1

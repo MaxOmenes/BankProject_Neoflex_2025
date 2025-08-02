@@ -1,4 +1,4 @@
-package neoflex.deal.service.local.endpoint;
+package neoflex.deal.service.local.endpoint.statement;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

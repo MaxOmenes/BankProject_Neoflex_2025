@@ -8,9 +8,12 @@ import lombok.RequiredArgsConstructor;
 import neoflex.deal.api.dto.FinishRegistrationRequestDto;
 import neoflex.deal.api.dto.LoanOfferDto;
 import neoflex.deal.api.dto.LoanStatementRequestDto;
-import neoflex.deal.service.local.endpoint.CalculateCreditService;
-import neoflex.deal.service.local.endpoint.CalculateOffersService;
-import neoflex.deal.service.local.endpoint.SelectOfferService;
+import neoflex.deal.service.local.endpoint.calculate.CalculateCreditService;
+import neoflex.deal.service.local.endpoint.document.SendDocumentsService;
+import neoflex.deal.service.local.endpoint.document.SignDocumentsService;
+import neoflex.deal.service.local.endpoint.document.SendSesCodeService;
+import neoflex.deal.service.local.endpoint.statement.CalculateOffersService;
+import neoflex.deal.service.local.endpoint.offer.SelectOfferService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +25,10 @@ public class DealController {
     private final CalculateCreditService calculateCreditService;
     private final CalculateOffersService calculateOffersService;
     private final SelectOfferService selectOfferService;
+
+    private final SendDocumentsService sendDocumentsService;
+    private final SendSesCodeService sendSesCodeService;
+    private final SignDocumentsService signDocumentsService;
 
     @Operation(
             summary = "Calculate loan offers",
@@ -116,4 +123,33 @@ public class DealController {
                                 @RequestBody FinishRegistrationRequestDto request) {
         calculateCreditService.calculateCredit(statementId, request);
     }
+
+    @Operation(
+            summary = "Send documents",
+            description = "Send documents to clients email"
+    )
+    @PostMapping("/document/{statementId}/send")
+    public void sendDocument(@PathVariable String statementId) {
+        sendDocumentsService.sendDocuments(statementId);
+    }
+
+    @Operation(
+            summary = "Send SES code",
+            description = "Send SES code to clients email"
+    )
+    @PostMapping("/document/{statementId}/code")
+    public void sendSes(@PathVariable String statementId) {
+        //TODO: REJECT LOGIC
+        sendSesCodeService.sendSes(statementId);
+    }
+
+    @Operation(
+            summary = "Send sign notification",
+            description = "Send notification that documents are signed"
+    )
+    @PostMapping("/document/{statementId}/sign")
+    public void signDocument(@PathVariable String statementId, @RequestParam(defaultValue = "false") boolean refused) {
+        signDocumentsService.signDocuments(statementId, refused);
+    }
+
 }

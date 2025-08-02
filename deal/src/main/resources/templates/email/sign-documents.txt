@@ -1,0 +1,3 @@
+Dear [(${client.firstName})] [# th:if="${client.middleName != null}"][(${client.middleName})] [/][(${client.lastName})],
+Your credit application has been successfully processed and the documents have been signed.
+Thank you for choosing our service.

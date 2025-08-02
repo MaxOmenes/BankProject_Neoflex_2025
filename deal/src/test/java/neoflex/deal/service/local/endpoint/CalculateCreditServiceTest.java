@@ -2,6 +2,7 @@ package neoflex.deal.service.local.endpoint;
 
 import neoflex.deal.api.dto.FinishRegistrationRequestDto;
 import neoflex.deal.api.dto.ScoringDataDto;
+import neoflex.deal.service.local.endpoint.calculate.CalculateCreditService;
 import neoflex.deal.service.local.fabric.ClientEntityFabric;
 import neoflex.deal.service.local.fabric.ScoringDataFabric;
 import neoflex.deal.service.remote.calculator.CalculatorService;

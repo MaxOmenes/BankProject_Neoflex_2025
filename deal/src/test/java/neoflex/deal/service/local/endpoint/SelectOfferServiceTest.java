@@ -2,6 +2,7 @@ package neoflex.deal.service.local.endpoint;
 
 import neoflex.deal.api.dto.LoanOfferDto;
 import neoflex.deal.api.dto.StatementStatusHistoryDto;
+import neoflex.deal.service.local.endpoint.offer.SelectOfferService;
 import neoflex.deal.service.local.fabric.StatementStatusHistoryFabric;
 import neoflex.deal.store.entity.StatementEntity;
 import neoflex.deal.store.enums.statement.ApplicationStatus;
@@ -14,11 +15,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
