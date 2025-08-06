@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Service
@@ -26,11 +27,11 @@ public class SignDocumentsService {
     private final StatementRepository statementRepository;
     private final EmailTemplateService emailTemplateService;
 
-    public void signDocuments(String statementId, boolean refused) {
+    public void signDocuments(String statementId, boolean refused, String sesCode) {
         StatementEntity statement = statementRepository.findById(UUID.fromString(statementId)).get(); //TODO: Handle Optional properly
         ClientEntity client = statement.getClient();
 
-        if (refused){
+        if (refused || !Objects.equals(statement.getSesCode(), sesCode)){
             statement.setStatus(ApplicationStatus.CLIENT_DENIED);
             Map<String, Object> templateData = Map.of(
                     "client", client
@@ -46,6 +47,7 @@ public class SignDocumentsService {
                     .build();
 
             dossierService.statementDenied(message);
+            return;
         }
 
         log.info("Signing documents for statement with ID: {}", statementId);

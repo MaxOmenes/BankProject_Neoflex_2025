@@ -148,8 +148,8 @@ public class DealController {
             description = "Send notification that documents are signed"
     )
     @PostMapping("/document/{statementId}/sign")
-    public void signDocument(@PathVariable String statementId, @RequestParam(defaultValue = "false") boolean refused) {
-        signDocumentsService.signDocuments(statementId, refused);
+    public void signDocument(@PathVariable String statementId, @RequestParam(defaultValue = "false") boolean refused, @RequestParam(required = true) String sesCode) {
+        signDocumentsService.signDocuments(statementId, refused, sesCode);
     }
 
 }
