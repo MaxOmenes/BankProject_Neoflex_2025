@@ -8,8 +8,6 @@ import neoflex.gateway.api.dto.LoanStatementRequestDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
@@ -51,7 +49,7 @@ public class DealService {
         dealRestClient.post()
                 .uri(selectOfferEndpoint)
                 .body(request)
-                .retrieve(); //TODO: CHECK HOW
+                .retrieve().toBodilessEntity(); //TODO: CHECK HOW
         log.info("Selected offer in deal service: {}", request);
     }
 
@@ -61,7 +59,7 @@ public class DealService {
         dealRestClient.post()
                 .uri(calculateEndpoint, statementId)
                 .body(request)
-                .retrieve(); //TODO: CHECK HOW
+                .retrieve().toBodilessEntity(); //TODO: CHECK HOW
         log.info("Request sent to deal service to calculate credit: {}", request);
     }
 
@@ -69,7 +67,7 @@ public class DealService {
         log.info("Received request to deal service to send documents for statementId: {}", statementId);
         dealRestClient.post()
                 .uri(sendDocumentsEndpoint, statementId)
-                .retrieve(); //TODO: CHECK HOW
+                .retrieve().toBodilessEntity(); //TODO: CHECK HOW
         log.info("Sent documents for statementId: {}", statementId);
     }
 
@@ -77,7 +75,7 @@ public class DealService {
         log.info("Received request to deal service to send SES code for statementId: {}", statementId);
         dealRestClient.post()
                 .uri(sendSesCodeEndpoint, statementId)
-                .retrieve(); //TODO: CHECK HOW
+                .retrieve().toBodilessEntity(); //TODO: CHECK HOW
         log.info("Sent SES code for statementId: {}", statementId);
     }
 
@@ -89,7 +87,7 @@ public class DealService {
                         .queryParam("refused", refused)
                         .queryParam("sesCode", sesCode)
                         .build(statementId))
-                .retrieve(); //TODO: CHECK HOW
+                .retrieve().toBodilessEntity(); //TODO: CHECK HOW
         log.info("Signed documents for statementId: {}", statementId);
     }
 }

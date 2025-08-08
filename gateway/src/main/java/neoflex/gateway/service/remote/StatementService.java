@@ -2,10 +2,8 @@ package neoflex.gateway.service.remote;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import neoflex.gateway.api.dto.CreditDto;
 import neoflex.gateway.api.dto.LoanOfferDto;
 import neoflex.gateway.api.dto.LoanStatementRequestDto;
-import neoflex.gateway.api.dto.ScoringDataDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
@@ -40,7 +38,7 @@ public class StatementService {
         statementRestClient.post()
                 .uri(selectOfferEndpoint)
                 .body(request)
-                .retrieve(); //TODO: CHECK HOW
+                .retrieve().toBodilessEntity(); //TODO: CHECK HOW
         log.info("Request sent to statement service to select offer: {}", request);
     }
 
