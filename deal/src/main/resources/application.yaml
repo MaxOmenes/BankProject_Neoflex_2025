@@ -24,6 +24,10 @@ spring:
     prefix: classpath:/templates/
     suffix: .txt
     mode: TEXT
+  security:
+    user:
+      name: admin
+      password: pass
 server:
   port: 8081
 service:
