@@ -1,4 +1,4 @@
-package neoflex.calculator.api.dto;
+package neoflex.gateway.api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;

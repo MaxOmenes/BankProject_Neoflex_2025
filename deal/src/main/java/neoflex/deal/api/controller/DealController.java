@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import neoflex.deal.api.dto.FinishRegistrationRequestDto;
 import neoflex.deal.api.dto.LoanOfferDto;
 import neoflex.deal.api.dto.LoanStatementRequestDto;
+import neoflex.deal.api.dto.StatementAdminDto;
+import neoflex.deal.service.local.endpoint.admin.AdminService;
 import neoflex.deal.service.local.endpoint.calculate.CalculateCreditService;
 import neoflex.deal.service.local.endpoint.document.SendDocumentsService;
 import neoflex.deal.service.local.endpoint.document.SignDocumentsService;
@@ -17,6 +19,7 @@ import neoflex.deal.service.local.endpoint.offer.SelectOfferService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/deal")
@@ -29,6 +32,8 @@ public class DealController {
     private final SendDocumentsService sendDocumentsService;
     private final SendSesCodeService sendSesCodeService;
     private final SignDocumentsService signDocumentsService;
+
+    private final AdminService adminService;
 
     @Operation(
             summary = "Calculate loan offers",
@@ -148,8 +153,18 @@ public class DealController {
             description = "Send notification that documents are signed"
     )
     @PostMapping("/document/{statementId}/sign")
-    public void signDocument(@PathVariable String statementId, @RequestParam(defaultValue = "false") boolean refused) {
-        signDocumentsService.signDocuments(statementId, refused);
+    public void signDocument(@PathVariable String statementId, @RequestParam(defaultValue = "false") boolean refused, @RequestParam(required = true) String sesCode) {
+        signDocumentsService.signDocuments(statementId, refused, sesCode);
+    }
+
+    @GetMapping("/admin/statement/{statementId}")
+    public StatementAdminDto getStatementById(@PathVariable String statementId) {
+        return adminService.getStatement(UUID.fromString(statementId));
+    }
+
+    @GetMapping("/admin/statement")
+    public List<StatementAdminDto> getAllStatements() {
+        return adminService.getAllStatements();
     }
 
 }
