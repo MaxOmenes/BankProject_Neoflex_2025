@@ -41,6 +41,15 @@ jobs:
         run: mvn -B jacoco:report
       - name: List all JaCoCo reports
         run: find . -name "jacoco.xml" -type f
+      - name: Upload coverage reports to Codecov with GitHub Action
+        uses: codecov/codecov-action@v5
+        with:
+          files: "./deal/target/site/jacoco/jacoco.xml"
+          root_dir: ${{ github.workspace }}
+          fail_ci_if_error: true
+          verbose: true
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
       - name: Build Maven projects
         run: mvn clean package -DskipTests
       - name: Upload entire project as artifact
@@ -52,15 +61,6 @@ jobs:
             !.git
             !.github
           retention-days: 1
-      - name: Upload coverage reports to Codecov with GitHub Action
-        uses: codecov/codecov-action@v5
-        with:
-          files: "./deal/target/site/jacoco/jacoco.xml"
-          root_dir: ${{ github.workspace }}
-          fail_ci_if_error: true
-          verbose: true
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
   deploy:
     runs-on: self-hosted
