@@ -93,4 +93,4 @@ jobs:
           docker compose down || true
           docker compose up -d
           sleep 30
-          docker-compose ps
+          docker compose ps
