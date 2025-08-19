@@ -53,7 +53,12 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
         with:
-          files: ./*/target/site/jacoco/jacoco.xml
+          files: >
+            ./calculator/target/site/jacoco/jacoco.xml,
+            ./deal/target/site/jacoco/jacoco.xml,
+            ./statement/target/site/jacoco/jacoco.xml,
+            ./dossier/target/site/jacoco/jacoco.xml,
+            ./gateway/target/site/jacoco/jacoco.xml
           flags: unittests
           name: codecov-umbrella
           fail_ci_if_error: false
