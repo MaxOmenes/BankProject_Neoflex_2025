@@ -36,7 +36,7 @@ jobs:
         with:
           maven-version: 3.8.2
       - name: Run tests
-        run: mvn clean test
+        run: mvn clean test jacoco:report
       - name: Build Maven projects
         run: mvn clean package -DskipTests
       - name: Upload entire project as artifact
