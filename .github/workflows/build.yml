@@ -36,7 +36,11 @@ jobs:
         with:
           maven-version: 3.8.2
       - name: Run tests
-        run: mvn clean test jacoco:report
+        run: mvn -B clean test
+      - name: Generate reports
+        run: mvn -B jacoco:reports
+      - name: List all JaCoCo reports
+        run: find . -name "jacoco.xml" -type f
       - name: Build Maven projects
         run: mvn clean package -DskipTests
       - name: Upload entire project as artifact
