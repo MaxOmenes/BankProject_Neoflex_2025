@@ -13,28 +13,22 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class EmploymentDto {
-    @Schema(description ="Status of employment, e.g. 'Employed', 'Unemployed', 'Self-employed', 'Business-owner'",
-            example = "EMPLOYED")
+    @Schema(description ="Status of employment, e.g. 'Employed', 'Unemployed', 'Self-employed', 'Business-owner'")
     private String employmentStatus;
 
-    @Schema(description = "INN of the employer",
-            example = "1234567890")
+    @Schema(description = "INN of the employer")
     private String employerINN;
 
-    @Schema(description = "Monthly salary of the client",
-            example = "50000")
+    @Schema(description = "Monthly salary of the client")
     private BigDecimal salary;
 
-    @Schema(description = "Position of the client at work, e.g. 'Manager', 'Middle-manager', 'Top-manager'",
-            example = "MANAGER")
+    @Schema(description = "Position of the client at work, e.g. 'Manager', 'Middle-manager', 'Top-manager'")
     private String position;
 
-    @Schema(description = "Total work experience in months in all companies",
-            example = "120")
+    @Schema(description = "Total work experience in months in all companies")
     private Integer workExperienceTotal;
 
-    @Schema(description = "Current work experience in months at the current company",
-            example = "24")
+    @Schema(description = "Current work experience in months at the current company")
     private Integer workExperienceCurrent;
 
 }
