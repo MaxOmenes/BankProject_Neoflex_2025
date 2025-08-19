@@ -55,7 +55,8 @@ jobs:
       - name: Upload coverage reports to Codecov with GitHub Action
         uses: codecov/codecov-action@v5
         with:
-          files: "deal/target/site/jacoco/jacoco.xml"
+          files: "./deal/target/site/jacoco/jacoco.xml"
+          root_dir: ${{ github.workspace }}
           fail_ci_if_error: true
           verbose: true
         env:
