@@ -17,6 +17,13 @@
         <module>gateway</module>
     </modules>
 
+    <properties>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.organization>maxomenes</sonar.organization>
+        <sonar.projectKey>MaxOmenes_BankProject_Neoflex_2025</sonar.projectKey>
+        <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
@@ -42,6 +49,19 @@
                         <phase>verify</phase>
                         <goals>
                             <goal>report-aggregate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.sonarsource.scanner.maven</groupId>
+                <artifactId>sonar-maven-plugin</artifactId>
+                <version>5.1.0.4751</version>
+                <executions>
+                    <execution>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sonar</goal>
                         </goals>
                     </execution>
                 </executions>
