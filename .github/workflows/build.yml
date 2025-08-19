@@ -38,7 +38,7 @@ jobs:
       - name: Run tests
         run: mvn -B clean test
       - name: Generate reports
-        run: mvn -B jacoco:reports
+        run: mvn -B jacoco:report
       - name: List all JaCoCo reports
         run: find . -name "jacoco.xml" -type f
       - name: Build Maven projects
