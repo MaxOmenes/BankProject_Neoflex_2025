@@ -46,13 +46,13 @@ services:
   calculator:
     build: calculator/.
     ports:
-      - "8080:8080"
+      - "9080:8080"
     networks:
       - backend
   deal:
     build: deal/.
     ports:
-      - "8081:8081"
+      - "9081:8081"
     environment:
       DB_URL: ${DB_URL:-jdbc:postgresql://localhost:5432/bank}
       DB_USERNAME: ${DB_USERNAME:-neoflex}
@@ -66,7 +66,7 @@ services:
   statement:
     build: statement/.
     ports:
-      - "8082:8082"
+      - "9082:8082"
     environment:
       DEAL_URL: ${DEAL_URL:-http://localhost:8081/deal}
     networks:
@@ -74,7 +74,7 @@ services:
   dossier:
     build: dossier/.
     ports:
-      - "8083:8083"
+      - "9083:8083"
     environment:
       EMAIL_USERNAME: ${EMAIL_USERNAME:-some.test@emailprovider.com}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD:-s0meEmai1t0ken}

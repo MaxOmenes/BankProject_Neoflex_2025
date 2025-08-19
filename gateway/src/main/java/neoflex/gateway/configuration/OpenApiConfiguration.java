@@ -29,7 +29,7 @@ import io.swagger.v3.oas.annotations.servers.Server;
                 ),
                 @Server(
                         description = "Production",
-                        url = "http://minecraftslaves.duckdns.org/" //TODO: Change address when deploy MS
+                        url = "http://minecraftslaves.duckdns.org:8888/" //TODO: Change address when deploy MS
                 ),
         }
 )
