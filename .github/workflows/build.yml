@@ -54,6 +54,10 @@ jobs:
           retention-days: 1
       - name: Upload coverage reports to Codecov with GitHub Action
         uses: codecov/codecov-action@v5
+        with:
+          files: ./**/target/site/jacoco/jacoco.xml
+          fail_ci_if_error: true
+          verbose: true
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
