@@ -54,6 +54,7 @@ public class SimpleScoringService implements ScoringService{
                 break;
             case SELF_EMPLOYED:
                 currentRate = currentRate.add(BigDecimal.TWO);
+                break;
             case BUSINESS_OWNER:
                 currentRate = currentRate.add(BigDecimal.ONE);
                 break;
