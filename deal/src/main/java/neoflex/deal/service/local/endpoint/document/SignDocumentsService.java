@@ -1,0 +1,75 @@
+package neoflex.deal.service.local.endpoint.document;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import neoflex.deal.messaging.dto.EmailMessageDto;
+import neoflex.deal.messaging.dto.enums.Subject;
+import neoflex.deal.service.local.business.document.SignClientDocumentsService;
+import neoflex.deal.service.local.template.EmailTemplateService;
+import neoflex.deal.service.remote.dossier.DossierService;
+import neoflex.deal.store.entity.ClientEntity;
+import neoflex.deal.store.entity.StatementEntity;
+import neoflex.deal.store.enums.statement.ApplicationStatus;
+import neoflex.deal.store.repository.StatementRepository;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
+
+@Service
+@Slf4j
+@RequiredArgsConstructor
+public class SignDocumentsService {
+    private final DossierService dossierService;
+    private final SignClientDocumentsService signClientDocumentsService;
+    private final StatementRepository statementRepository;
+    private final EmailTemplateService emailTemplateService;
+
+    public void signDocuments(String statementId, boolean refused, String sesCode) {
+        StatementEntity statement = statementRepository.findById(UUID.fromString(statementId)).get(); //TODO: Handle Optional properly
+        ClientEntity client = statement.getClient();
+
+        if (refused || !Objects.equals(statement.getSesCode(), sesCode)){
+            statement.setStatus(ApplicationStatus.CLIENT_DENIED);
+            Map<String, Object> templateData = Map.of(
+                    "client", client
+            );
+
+            String emailText = emailTemplateService.processTemplate("email/statement-denied", templateData);
+
+            EmailMessageDto message = EmailMessageDto.builder()
+                    .address(client.getEmail())
+                    .statementId(statement.getStatementId())
+                    .subject(Subject.STATEMENT_DENIED)
+                    .text(emailText)
+                    .build();
+
+            dossierService.statementDenied(message);
+            return;
+        }
+
+        log.info("Signing documents for statement with ID: {}", statementId);
+        signClientDocumentsService.signDocuments(statement);
+        log.info("Documents signed for statement with ID: {}", statementId);
+        statement.setStatus(ApplicationStatus.CREDIT_ISSUED);
+        statement.setSignDate(LocalDate.now());
+        statementRepository.save(statement);
+
+        Map<String, Object> templateData = Map.of(
+                "client", client
+        );
+
+        String emailText = emailTemplateService.processTemplate("email/sign-documents", templateData);
+
+        EmailMessageDto message = EmailMessageDto.builder()
+                .address(client.getEmail())
+                .statementId(statement.getStatementId())
+                .subject(Subject.CREDIT_ISSUED)
+                .text(emailText)
+                .build();
+
+        dossierService.creditIssued(message);
+    }
+}

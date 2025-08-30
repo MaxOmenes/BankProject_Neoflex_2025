@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: calculator
+logging:
+  level:
+    root: info
+    neoflex.calculator: debug
+
+constants:
+  rate: 36
+  insuranceRate: 2
+  salaryClientRate: 1.5
+  insurancePolicyRate: 0.5
+
+server:
+  port: 8080

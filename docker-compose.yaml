@@ -1,0 +1,98 @@
+services:
+  db:
+      image: postgres
+      ports:
+        - "5432:5432"
+      environment:
+        POSTGRES_PASSWORD: neoflex
+        POSTGRES_USER: neoflex
+        POSTGRES_DB: bank
+      networks:
+        - backend
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+    networks:
+      - backend
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_LOG_RETENTION_HOURS: 168
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      CLUSTER_ID: "NEOFLEX_CLUSTER"
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    networks:
+      - backend
+  calculator:
+    build: calculator/.
+    ports:
+      - "9080:8080"
+    networks:
+      - backend
+  deal:
+    build: deal/.
+    ports:
+      - "9081:8081"
+    environment:
+      DB_URL: ${DB_URL:-jdbc:postgresql://localhost:5432/bank}
+      DB_USERNAME: ${DB_USERNAME:-neoflex}
+      DB_PASSWORD: ${DB_PASSWORD:-neoflex}
+      KAFKA_URL: ${KAFKA_URL:-localhost:9092}
+      CALCULATOR_URL: ${CALCULATOR_URL:-http://localhost:8080/calculator}
+      ADMIN_USERNAME: ${ADMIN_USERNAME:-admin}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-pass}
+    networks:
+      - backend
+  statement:
+    build: statement/.
+    ports:
+      - "9082:8082"
+    environment:
+      DEAL_URL: ${DEAL_URL:-http://localhost:8081/deal}
+    networks:
+      - backend
+  dossier:
+    build: dossier/.
+    ports:
+      - "9083:8083"
+    environment:
+      EMAIL_USERNAME: ${EMAIL_USERNAME:-some.test@emailprovider.com}
+      EMAIL_PASSWORD: ${EMAIL_PASSWORD:-s0meEmai1t0ken}
+      KAFKA_URL: ${KAFKA_URL:-localhost:9092}
+    networks:
+      - backend
+  gateway:
+    build: gateway/.
+    ports:
+      - "8888:8888"
+    environment:
+      CALCULATOR_URL: ${CALCULATOR_URL:-http://localhost:8080/calculator}
+      DEAL_URL: ${DEAL_URL:-http://localhost:8081/deal}
+      STATEMENT_URL: ${STATEMENT_URL:-http://localhost:8082/statement}
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
+volumes:
+  kafka_data:
