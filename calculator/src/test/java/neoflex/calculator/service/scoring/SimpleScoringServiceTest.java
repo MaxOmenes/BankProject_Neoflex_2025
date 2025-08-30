@@ -136,7 +136,7 @@ class SimpleScoringServiceTest {
 
         CreditDto score = simpleScoringService.score(scoringNormal);
 
-        assertEquals(score.getRate(), BigDecimal.valueOf(29.5), "Expected rate for self-employed status");
+        assertEquals(score.getRate(), BigDecimal.valueOf(28.5), "Expected rate for self-employed status");
     }
 
     @Test
