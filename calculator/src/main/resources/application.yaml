@@ -11,3 +11,6 @@ constants:
   insuranceRate: 2
   salaryClientRate: 1.5
   insurancePolicyRate: 0.5
+
+server:
+  port: 8080

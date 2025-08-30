@@ -4,6 +4,9 @@ import neoflex.deal.api.dto.LoanOfferDto;
 import neoflex.deal.api.dto.StatementStatusHistoryDto;
 import neoflex.deal.service.local.endpoint.offer.SelectOfferService;
 import neoflex.deal.service.local.fabric.StatementStatusHistoryFabric;
+import neoflex.deal.service.local.template.EmailTemplateService;
+import neoflex.deal.service.remote.dossier.DossierService;
+import neoflex.deal.store.entity.ClientEntity;
 import neoflex.deal.store.entity.StatementEntity;
 import neoflex.deal.store.enums.statement.ApplicationStatus;
 import neoflex.deal.store.enums.statement.status_history.ChangeType;
@@ -22,6 +25,8 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -32,6 +37,10 @@ class SelectOfferServiceTest {
     StatementRepository statementRepository;
     @Mock
     StatementStatusHistoryFabric statementStatusHistoryFabric;
+    @Mock
+    DossierService dossierService;
+    @Mock
+    EmailTemplateService emailTemplateService;
 
     @InjectMocks
     SelectOfferService selectOfferService;
@@ -49,8 +58,12 @@ class SelectOfferServiceTest {
     }
     @Test
     void testSelectOffer() {
-        LoanOfferDto offer = LoanOfferDto.builder().build();
+        LoanOfferDto offer = LoanOfferDto.builder()
+                .build();
+        ClientEntity client = ClientEntity.builder()
+                .build();
         StatementEntity statement = StatementEntity.builder()
+                .client(client)
                 .statusHistory(new ArrayList<StatementStatusHistoryDto>()).build();
         StatementStatusHistoryDto historyDto = StatementStatusHistoryDto.builder()
                 .changeType(ChangeType.MANUAL) //TODO: (!) when it change?
@@ -63,6 +76,8 @@ class SelectOfferServiceTest {
                 .thenReturn(Optional.of(statement));
         when(statementRepository.save(statement)).thenReturn(statement);
         when(statementStatusHistoryFabric.create(ApplicationStatus.APPROVED)).thenReturn(historyDto);
+        doNothing().when(dossierService).finishRegistration(any());
+        when(emailTemplateService.processTemplate(any(), any())).thenReturn("Test Message");
 
         ArgumentCaptor<StatementEntity> captor = ArgumentCaptor.forClass(StatementEntity.class);
 

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -17,6 +18,15 @@ public class CalculateAnnuityCreditService implements CreditService{
 
     private final PaymentService paymentService;
     private final InsuranceService insuranceService;
+
+
+    private final String AAA = "AAA";
+
+    public void test(String a){
+        if(AAA.equals(a)){
+            System.out.println("BBB");
+        }
+    }
 
     @Override
     public void calculateCredit(CreditDto credit) {
@@ -26,6 +36,8 @@ public class CalculateAnnuityCreditService implements CreditService{
         BigDecimal psk = credit.getPaymentSchedule().stream()
                 .map(PaymentScheduleElementDto::getTotalPayment)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+
 
         List<BigDecimal> insurancePayments = insuranceService.calculateInsurance(credit);
 

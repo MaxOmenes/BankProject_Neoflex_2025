@@ -3,12 +3,12 @@ spring:
     name: gateway
 service:
   calculator:
-    url: http://localhost:8080/calculator
+    url: ${CALCULATOR_URL:http://localhost:8080/calculator}
     path:
       offers: /offers
       calculate: /calc
   deal:
-    url: http://localhost:8081/deal
+    url: ${DEAL_URL:http://localhost:8081/deal}
     path:
       statement: /statement
       select-offer: /offer/select
@@ -17,7 +17,7 @@ service:
       send-ses-code: /document/{statementId}/code
       sign-documents: /document/{statementId}/sign
   statement:
-    url: http://localhost:8082/statement
+    url: ${STATEMENT_URL:http://localhost:8082/statement}
     path:
       statement:
       select-offer: /offer

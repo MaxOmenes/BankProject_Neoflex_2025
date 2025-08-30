@@ -10,26 +10,19 @@ import java.util.List;
 @Data
 @Builder
 public class CreditDto {
-    @Schema(description = "Amount requested by the client",
-            example = "100000")
+    @Schema(description = "Amount requested by the client")
     private BigDecimal amount;
-    @Schema(description = "How many months the loan will be active",
-            example = "36")
+    @Schema(description = "How many months the loan will be active")
     private Integer term;
-    @Schema(description = "Monthly payment amount",
-            example = "3200.50")
+    @Schema(description = "Monthly payment amount")
     private BigDecimal monthlyPayment;
-    @Schema(description = "Percentage rate for the loan",
-            example = "12.5")
+    @Schema(description = "Percentage rate for the loan")
     private BigDecimal rate;
-    @Schema(description = "Total amount of the loan offer including percentages",
-            example = "115218")
+    @Schema(description = "Total amount of the loan offer including percentages")
     private BigDecimal psk;
-    @Schema(description = "Is the loan offer available for insurance",
-            example = "true")
+    @Schema(description = "Is the loan offer available for insurance")
     private Boolean isInsuranceEnabled;
-    @Schema(description = "Is the client a salary client",
-            example = "true")
+    @Schema(description = "Is the client a salary client")
     private Boolean isSalaryClient;
     @Schema(description = "Payment schedule for the loan")
     private List<PaymentScheduleElementDto> paymentSchedule;
